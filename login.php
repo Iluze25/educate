@@ -25,7 +25,7 @@
                 <p class="text-gray-600">Masuk ke Dashboard Pembelajaran</p>
             </div>
             
-            <form id="loginForm" class="space-y-6">
+            <form method="POST" id="loginForm" class="space-y-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                     <input id="username" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan username" required>
