@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['login'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,7 +24,7 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    
+
 
     <!-- Signup Page -->
     <div id="signupPage" class="hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-green-500 via-teal-600 to-blue-700">
