@@ -1,3 +1,8 @@
+<?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        include 'service/process_sign.php';
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
