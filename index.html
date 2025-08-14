@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Pembelajaran Guru SD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .site-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4a5568;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #667eea;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sections */
+        .section {
+            background: white;
+            margin: 2rem auto;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .section p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #718096;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: #f7fafc;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h4 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .small-btn {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .small-btn:hover {
+            background: #5a67d8;
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Results */
+        .result {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .quiz-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .quiz-item {
+            background: #f7fafc;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#home" class="brand">🎓 Portal Guru SD</a>
+                <nav class="nav" id="nav">
+                    <a href="#home">Beranda</a>
+                    <a href="#resources">Sumber Materi</a>
+                    <a href="#lessonplans">RPP</a>
+                    <a href="#quizzes">Kuis</a>
+                    <a href="#contact">Kontak</a>
+                </nav>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h2>Selamat Datang, Guru Hebat! 👋</h2>
+                <p>Portal pembelajaran yang dirancang khusus untuk membantu guru SD dalam menyiapkan materi, RPP, kuis, dan mengelola pembelajaran dengan mudah dan efektif.</p>
+                <a href="#lessonplans" class="btn">Mulai Sekarang</a>
+            </div>
+        </section>
+
+        <section id="resources" class="section">
+            <div class="container">
+                <h3>📚 Sumber & Materi Pembelajaran</h3>
+                <p>Kumpulan materi pembelajaran yang siap digunakan untuk berbagai mata pelajaran</p>
+                
+                <div class="cards">
+                    <article class="card">
+                        <h4>🔢 Matematika</h4>
+                        <p>Ringkasan konsep dasar, lembar kerja, dan latihan soal matematika untuk semua kelas SD.</p>
+                        <a href="#" class="small-btn">Unduh Materi</a>
+                    </article>
+                    <article class="card">
+                        <h4>📖 Bahasa Indonesia</h4>
+                        <p>Kumpulan teks bacaan, soal pemahaman, dan rubrik penilaian bahasa Indonesia.</p>
+                        <a href="#" class="small-btn">Unduh Materi</a>
+                    </article>
+                    <article class="card">
+                        <h4>🔬 IPA & IPS</h4>
+                        <p>Ide praktikum sederhana dan materi pembelajaran IPA & IPS yang aman untuk kelas SD.</p>
+                        <a href="#" class="small-btn">Unduh Materi</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="lessonplans" class="section">
+            <div class="container">
+                <h3>📝 Generator RPP</h3>
+                <p>Buat RPP (Rencana Pelaksanaan Pembelajaran) dengan mudah menggunakan template yang bisa disesuaikan</p>
+
+                <div class="form-grid">
+                    <label>
+                        Judul RPP
+                        <input type="text" id="rppTitle" placeholder="Contoh: Mengenal Pecahan Sederhana">
+                    </label>
+                    <label>
+                        Kelas
+                        <select id="rppClass">
+                            <option value="1">Kelas 1</option>
+                            <option value="2">Kelas 2</option>
+                            <option value="3">Kelas 3</option>
+                            <option value="4">Kelas 4</option>
+                            <option value="5">Kelas 5</option>
+                            <option value="6">Kelas 6</option>
+                        </select>
+                    </label>
+                    <label>
+                        Mata Pelajaran
+                        <select id="rppSubject">
+                            <option value="Matematika">Matematika</option>
+                            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                            <option value="IPA">IPA</option>
+                            <option value="IPS">IPS</option>
+                            <option value="PKn">PKn</option>
+                        </select>
+                    </label>
+                    <label>
+                        Tujuan Pembelajaran
+                        <textarea id="rppGoal" placeholder="Tuliskan tujuan pembelajaran yang ingin dicapai..."></textarea>
+                    </label>
+                </div>
+                
+                <button id="generateRPP" class="btn">🚀 Buat RPP</button>
+                
+                <div id="rppResult" class="result"></div>
+            </div>
+        </section>
+
+        <section id="quizzes" class="section">
+            <div class="container">
+                <h3>❓ Pembuat Kuis</h3>
+                <p>Buat kuis pilihan ganda dengan mudah untuk menguji pemahaman siswa</p>
+
+                <div class="quiz-grid">
+                    <label>
+                        Pertanyaan
+                        <input type="text" id="qText" placeholder="Contoh: Berapa hasil dari 2 + 3?">
+                    </label>
+                    <label>
+                        Pilihan A
+                        <input type="text" id="qA" placeholder="Pilihan A">
+                    </label>
+                    <label>
+                        Pilihan B
+                        <input type="text" id="qB" placeholder="Pilihan B">
+                    </label>
+                    <label>
+                        Pilihan C
+                        <input type="text" id="qC" placeholder="Pilihan C">
+                    </label>
+                    <label>
+                        Jawaban Benar
+                        <select id="qKey">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                    </label>
+                </div>
+                
+                <button id="createQuiz" class="btn">➕ Tambah Soal</button>
+                
+                <ul id="quizList" class="quiz-list"></ul>
+                
+                <button id="clearQuiz" class="btn" style="background: #e53e3e; margin-top: 1rem;">🗑️ Hapus Semua Soal</button>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <h3>📞 Kontak & Bantuan</h3>
+                <p>Butuh bantuan atau ingin memberikan saran? Hubungi kami!</p>
+                
+                <form id="contactForm" style="max-width: 600px; margin: 0 auto;">
+                    <div style="margin-bottom: 1rem;">
+                        <label>
+                            Nama Lengkap
+                            <input type="text" id="contactName" required>
+                        </label>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label>
+                            Email
+                            <input type="email" id="contactEmail" required>
+                        </label>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label>
+                            Pesan
+                            <textarea id="contactMessage" placeholder="Tuliskan pesan atau saran Anda..." required></textarea>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn">📧 Kirim Pesan</button>
+                </form>
+                
+                <div id="contactResult" class="result" style="max-width: 600px; margin: 2rem auto 0;"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: rgba(255, 255, 255, 0.9); text-align: center; padding: 2rem; margin-top: 2rem;">
+        <div class="container">
+            <p style="color: #718096;">© 2024 Portal Guru SD. Dibuat dengan ❤️ untuk pendidikan Indonesia.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('nav');
+
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    nav.classList.remove('active');
+                }
+            });
+        });
+
+        // RPP Generator
+        document.getElementById('generateRPP').addEventListener('click', () => {
+            const title = document.getElementById('rppTitle').value;
+            const className = document.getElementById('rppClass').value;
+            const subject = document.getElementById('rppSubject').value;
+            const goal = document.getElementById('rppGoal').value;
+
+            if (!title || !goal) {
+                alert('Mohon isi judul RPP dan tujuan pembelajaran!');
+                return;
+            }
+
+            const rppContent = `
+                <h4>📋 RPP: ${title}</h4>
+                <p><strong>Kelas:</strong> ${className}</p>
+                <p><strong>Mata Pelajaran:</strong> ${subject}</p>
+                <p><strong>Tujuan Pembelajaran:</strong></p>
+                <p>${goal}</p>
+                <hr style="margin: 1rem 0;">
+                <p><strong>Kegiatan Pembelajaran:</strong></p>
+                <ol>
+                    <li>Pembukaan (10 menit): Salam, doa, dan apersepsi</li>
+                    <li>Kegiatan Inti (50 menit): Penyampaian materi dan praktik</li>
+                    <li>Penutup (10 menit): Kesimpulan dan evaluasi</li>
+                </ol>
+                <p><strong>Penilaian:</strong> Observasi, tes tertulis, dan praktik</p>
+                <button onclick="printRPP()" class="small-btn" style="margin-top: 1rem;">🖨️ Cetak RPP</button>
+            `;
+
+            const resultDiv = document.getElementById('rppResult');
+            resultDiv.innerHTML = rppContent;
+            resultDiv.style.display = 'block';
+        });
+
+        // Print RPP function
+        function printRPP() {
+            const rppContent = document.getElementById('rppResult').innerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>RPP - Portal Guru SD</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 20px; }
+                            h4 { color: #2d3748; }
+                            .small-btn { display: none; }
+                        </style>
+                    </head>
+                    <body>${rppContent}</body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Quiz Creator
+        let quizQuestions = [];
+
+        document.getElementById('createQuiz').addEventListener('click', () => {
+            const question = document.getElementById('qText').value;
+            const optionA = document.getElementById('qA').value;
+            const optionB = document.getElementById('qB').value;
+            const optionC = document.getElementById('qC').value;
+            const correctAnswer = document.getElementById('qKey').value;
+
+            if (!question || !optionA || !optionB || !optionC) {
+                alert('Mohon isi semua field pertanyaan dan pilihan jawaban!');
+                return;
+            }
+
+            const quizItem = {
+                question,
+                options: { A: optionA, B: optionB, C: optionC },
+                correct: correctAnswer
+            };
+
+            quizQuestions.push(quizItem);
+            updateQuizList();
+            clearQuizForm();
+        });
+
+        function updateQuizList() {
+            const quizList = document.getElementById('quizList');
+            quizList.innerHTML = '';
+
+            quizQuestions.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'quiz-item';
+                li.innerHTML = `
+                    <strong>Soal ${index + 1}:</strong> ${item.question}<br>
+                    <strong>A.</strong> ${item.options.A}<br>
+                    <strong>B.</strong> ${item.options.B}<br>
+                    <strong>C.</strong> ${item.options.C}<br>
+                    <strong>Jawaban:</strong> ${item.correct} - ${item.options[item.correct]}
+                    <button onclick="removeQuiz(${index})" class="small-btn" style="background: #e53e3e; margin-left: 1rem;">Hapus</button>
+                `;
+                quizList.appendChild(li);
+            });
+        }
+
+        function removeQuiz(index) {
+            quizQuestions.splice(index, 1);
+            updateQuizList();
+        }
+
+        function clearQuizForm() {
+            document.getElementById('qText').value = '';
+            document.getElementById('qA').value = '';
+            document.getElementById('qB').value = '';
+            document.getElementById('qC').value = '';
+            document.getElementById('qKey').value = 'A';
+        }
+
+        document.getElementById('clearQuiz').addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin menghapus semua soal?')) {
+                quizQuestions = [];
+                updateQuizList();
+            }
+        });
+
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+
+            // Simulate form submission
+            const resultDiv = document.getElementById('contactResult');
+            resultDiv.innerHTML = `
+                <h4>✅ Pesan Terkirim!</h4>
+                <p>Terima kasih <strong>${name}</strong>! Pesan Anda telah kami terima dan akan segera ditindaklanjuti.</p>
+                <p><em>Catatan: Ini adalah demo. Dalam implementasi nyata, pesan akan dikirim ke server.</em></p>
+            `;
+            resultDiv.style.display = 'block';
+
+            // Clear form
+            document.getElementById('contactForm').reset();
+        });
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards and sections
+            document.querySelectorAll('.card, .section').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e068bdd61cb4ac',t:'MTc1NTAwNjI4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html><!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Pembelajaran Guru SD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .site-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4a5568;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #667eea;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sections */
+        .section {
+            background: white;
+            margin: 2rem auto;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .section p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #718096;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: #f7fafc;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h4 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .small-btn {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .small-btn:hover {
+            background: #5a67d8;
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Results */
+        .result {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .quiz-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .quiz-item {
+            background: #f7fafc;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#home" class="brand">🎓 Portal Guru SD</a>
+                <nav class="nav" id="nav">
+                    <a href="#home">Beranda</a>
+                    <a href="#resources">Sumber Materi</a>
+                    <a href="#lessonplans">RPP</a>
+                    <a href="#quizzes">Kuis</a>
+                    <a href="#contact">Kontak</a>
+                </nav>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h2>Selamat Datang, Guru Hebat! 👋</h2>
+                <p>Portal pembelajaran yang dirancang khusus untuk membantu guru SD dalam menyiapkan materi, RPP, kuis, dan mengelola pembelajaran dengan mudah dan efektif.</p>
+                <a href="#lessonplans" class="btn">Mulai Sekarang</a>
+            </div>
+        </section>
+
+        <section id="resources" class="section">
+            <div class="container">
+                <h3>📚 Sumber & Materi Pembelajaran</h3>
+                <p>Kumpulan materi pembelajaran yang siap digunakan untuk berbagai mata pelajaran</p>
+                
+                <div class="cards">
+                    <article class="card">
+                        <h4>🔢 Matematika</h4>
+                        <p>Ringkasan konsep dasar, lembar kerja, dan latihan soal matematika untuk semua kelas SD.</p>
+                        <a href="#" class="small-btn">Unduh Materi</a>
+                    </article>
+                    <article class="card">
+                        <h4>📖 Bahasa Indonesia</h4>
+                        <p>Kumpulan teks bacaan, soal pemahaman, dan rubrik penilaian bahasa Indonesia.</p>
+                        <a href="#" class="small-btn">Unduh Materi</a>
+                    </article>
+                    <article class="card">
+                        <h4>🔬 IPA & IPS</h4>
+                        <p>Ide praktikum sederhana dan materi pembelajaran IPA & IPS yang aman untuk kelas SD.</p>
+                        <a href="#" class="small-btn">Unduh Materi</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="lessonplans" class="section">
+            <div class="container">
+                <h3>📝 Generator RPP</h3>
+                <p>Buat RPP (Rencana Pelaksanaan Pembelajaran) dengan mudah menggunakan template yang bisa disesuaikan</p>
+
+                <div class="form-grid">
+                    <label>
+                        Judul RPP
+                        <input type="text" id="rppTitle" placeholder="Contoh: Mengenal Pecahan Sederhana">
+                    </label>
+                    <label>
+                        Kelas
+                        <select id="rppClass">
+                            <option value="1">Kelas 1</option>
+                            <option value="2">Kelas 2</option>
+                            <option value="3">Kelas 3</option>
+                            <option value="4">Kelas 4</option>
+                            <option value="5">Kelas 5</option>
+                            <option value="6">Kelas 6</option>
+                        </select>
+                    </label>
+                    <label>
+                        Mata Pelajaran
+                        <select id="rppSubject">
+                            <option value="Matematika">Matematika</option>
+                            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                            <option value="IPA">IPA</option>
+                            <option value="IPS">IPS</option>
+                            <option value="PKn">PKn</option>
+                        </select>
+                    </label>
+                    <label>
+                        Tujuan Pembelajaran
+                        <textarea id="rppGoal" placeholder="Tuliskan tujuan pembelajaran yang ingin dicapai..."></textarea>
+                    </label>
+                </div>
+                
+                <button id="generateRPP" class="btn">🚀 Buat RPP</button>
+                
+                <div id="rppResult" class="result"></div>
+            </div>
+        </section>
+
+        <section id="quizzes" class="section">
+            <div class="container">
+                <h3>❓ Pembuat Kuis</h3>
+                <p>Buat kuis pilihan ganda dengan mudah untuk menguji pemahaman siswa</p>
+
+                <div class="quiz-grid">
+                    <label>
+                        Pertanyaan
+                        <input type="text" id="qText" placeholder="Contoh: Berapa hasil dari 2 + 3?">
+                    </label>
+                    <label>
+                        Pilihan A
+                        <input type="text" id="qA" placeholder="Pilihan A">
+                    </label>
+                    <label>
+                        Pilihan B
+                        <input type="text" id="qB" placeholder="Pilihan B">
+                    </label>
+                    <label>
+                        Pilihan C
+                        <input type="text" id="qC" placeholder="Pilihan C">
+                    </label>
+                    <label>
+                        Jawaban Benar
+                        <select id="qKey">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                    </label>
+                </div>
+                
+                <button id="createQuiz" class="btn">➕ Tambah Soal</button>
+                
+                <ul id="quizList" class="quiz-list"></ul>
+                
+                <button id="clearQuiz" class="btn" style="background: #e53e3e; margin-top: 1rem;">🗑️ Hapus Semua Soal</button>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <h3>📞 Kontak & Bantuan</h3>
+                <p>Butuh bantuan atau ingin memberikan saran? Hubungi kami!</p>
+                
+                <form id="contactForm" style="max-width: 600px; margin: 0 auto;">
+                    <div style="margin-bottom: 1rem;">
+                        <label>
+                            Nama Lengkap
+                            <input type="text" id="contactName" required>
+                        </label>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label>
+                            Email
+                            <input type="email" id="contactEmail" required>
+                        </label>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label>
+                            Pesan
+                            <textarea id="contactMessage" placeholder="Tuliskan pesan atau saran Anda..." required></textarea>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn">📧 Kirim Pesan</button>
+                </form>
+                
+                <div id="contactResult" class="result" style="max-width: 600px; margin: 2rem auto 0;"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: rgba(255, 255, 255, 0.9); text-align: center; padding: 2rem; margin-top: 2rem;">
+        <div class="container">
+            <p style="color: #718096;">© 2024 Portal Guru SD. Dibuat dengan ❤️ untuk pendidikan Indonesia.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('nav');
+
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    nav.classList.remove('active');
+                }
+            });
+        });
+
+        // RPP Generator
+        document.getElementById('generateRPP').addEventListener('click', () => {
+            const title = document.getElementById('rppTitle').value;
+            const className = document.getElementById('rppClass').value;
+            const subject = document.getElementById('rppSubject').value;
+            const goal = document.getElementById('rppGoal').value;
+
+            if (!title || !goal) {
+                alert('Mohon isi judul RPP dan tujuan pembelajaran!');
+                return;
+            }
+
+            const rppContent = `
+                <h4>📋 RPP: ${title}</h4>
+                <p><strong>Kelas:</strong> ${className}</p>
+                <p><strong>Mata Pelajaran:</strong> ${subject}</p>
+                <p><strong>Tujuan Pembelajaran:</strong></p>
+                <p>${goal}</p>
+                <hr style="margin: 1rem 0;">
+                <p><strong>Kegiatan Pembelajaran:</strong></p>
+                <ol>
+                    <li>Pembukaan (10 menit): Salam, doa, dan apersepsi</li>
+                    <li>Kegiatan Inti (50 menit): Penyampaian materi dan praktik</li>
+                    <li>Penutup (10 menit): Kesimpulan dan evaluasi</li>
+                </ol>
+                <p><strong>Penilaian:</strong> Observasi, tes tertulis, dan praktik</p>
+                <button onclick="printRPP()" class="small-btn" style="margin-top: 1rem;">🖨️ Cetak RPP</button>
+            `;
+
+            const resultDiv = document.getElementById('rppResult');
+            resultDiv.innerHTML = rppContent;
+            resultDiv.style.display = 'block';
+        });
+
+        // Print RPP function
+        function printRPP() {
+            const rppContent = document.getElementById('rppResult').innerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>RPP - Portal Guru SD</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 20px; }
+                            h4 { color: #2d3748; }
+                            .small-btn { display: none; }
+                        </style>
+                    </head>
+                    <body>${rppContent}</body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Quiz Creator
+        let quizQuestions = [];
+
+        document.getElementById('createQuiz').addEventListener('click', () => {
+            const question = document.getElementById('qText').value;
+            const optionA = document.getElementById('qA').value;
+            const optionB = document.getElementById('qB').value;
+            const optionC = document.getElementById('qC').value;
+            const correctAnswer = document.getElementById('qKey').value;
+
+            if (!question || !optionA || !optionB || !optionC) {
+                alert('Mohon isi semua field pertanyaan dan pilihan jawaban!');
+                return;
+            }
+
+            const quizItem = {
+                question,
+                options: { A: optionA, B: optionB, C: optionC },
+                correct: correctAnswer
+            };
+
+            quizQuestions.push(quizItem);
+            updateQuizList();
+            clearQuizForm();
+        });
+
+        function updateQuizList() {
+            const quizList = document.getElementById('quizList');
+            quizList.innerHTML = '';
+
+            quizQuestions.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'quiz-item';
+                li.innerHTML = `
+                    <strong>Soal ${index + 1}:</strong> ${item.question}<br>
+                    <strong>A.</strong> ${item.options.A}<br>
+                    <strong>B.</strong> ${item.options.B}<br>
+                    <strong>C.</strong> ${item.options.C}<br>
+                    <strong>Jawaban:</strong> ${item.correct} - ${item.options[item.correct]}
+                    <button onclick="removeQuiz(${index})" class="small-btn" style="background: #e53e3e; margin-left: 1rem;">Hapus</button>
+                `;
+                quizList.appendChild(li);
+            });
+        }
+
+        function removeQuiz(index) {
+            quizQuestions.splice(index, 1);
+            updateQuizList();
+        }
+
+        function clearQuizForm() {
+            document.getElementById('qText').value = '';
+            document.getElementById('qA').value = '';
+            document.getElementById('qB').value = '';
+            document.getElementById('qC').value = '';
+            document.getElementById('qKey').value = 'A';
+        }
+
+        document.getElementById('clearQuiz').addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin menghapus semua soal?')) {
+                quizQuestions = [];
+                updateQuizList();
+            }
+        });
+
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+
+            // Simulate form submission
+            const resultDiv = document.getElementById('contactResult');
+            resultDiv.innerHTML = `
+                <h4>✅ Pesan Terkirim!</h4>
+                <p>Terima kasih <strong>${name}</strong>! Pesan Anda telah kami terima dan akan segera ditindaklanjuti.</p>
+                <p><em>Catatan: Ini adalah demo. Dalam implementasi nyata, pesan akan dikirim ke server.</em></p>
+            `;
+            resultDiv.style.display = 'block';
+
+            // Clear form
+            document.getElementById('contactForm').reset();
+        });
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards and sections
+            document.querySelectorAll('.card, .section').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e068bdd61cb4ac',t:'MTc1NTAwNjI4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
