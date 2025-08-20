@@ -1,7 +1,12 @@
 <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        include 'service/process_sigin.php';
-    }
+// form login
+session_start();
+
+// Kalau sudah login, langsung masuk dashboard
+if (isset($_SESSION['id'])) {
+    header("Location: index.php");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +35,7 @@
                 <p class="text-gray-600">Masuk ke Dashboard Pembelajaran</p>
             </div>
             
-            <form method="POST" id="loginForm" class="space-y-6">
+            <form method="POST" action="service/process_sigin.php" id="loginForm" class="space-y-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                     <input name="username" id="username" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan username" required>
@@ -47,9 +52,6 @@
             </form>
             
             <div class="mt-4 text-center">
-                <button onclick="showSignup()" class="text-blue-600 hover:text-blue-800 text-sm underline">
-                    Belum punya akun? Daftar di sini
-                </button>
             </div>
             
             <div class="mt-6 p-4 bg-blue-50 rounded-lg">

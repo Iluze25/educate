@@ -1,0 +1,2954 @@
+<?php
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal Guru SD - Dashboard Pembelajaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .feature-icon {
+        transition: transform 0.3s ease;
+      }
+      .feature-icon:hover {
+        transform: scale(1.1);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+
+    <!-- Main Dashboard (Hidden initially) -->
+    <div id="mainDashboard" >
+      <!-- Header -->
+      <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="text-3xl">📚</div>
+              <div>
+                <h1 class="text-2xl font-bold">Portal Guru SD</h1>
+                <p class="text-blue-100 text-sm" id="dashboardSubtitle">
+                  Dashboard Pembelajaran Interaktif
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4">
+              <div class="text-right">
+                <span id="userGreeting" class="text-sm">Selamat datang <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong> !</span>
+                <p id="userRole" class="text-xs text-blue-100"></p>
+              </div>
+              <div
+                class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center"
+              >
+                <span id="userAvatar" class="text-lg">👩‍🏫</span>
+              </div>
+              <a
+                href="signup.php"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+
+              >
+                Signup
+              </a>
+              <a
+                href="logout.php"
+                id="logoutBtn"
+                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                Keluar
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="container mx-auto px-6 py-8">
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-600 text-sm">Total Siswa</p>
+                <p class="text-2xl font-bold text-blue-600" id="totalStudents">
+                  0
+                </p>
+              </div>
+              <div class="text-3xl">👥</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-600 text-sm">Mata Pelajaran</p>
+                <p class="text-2xl font-bold text-green-600">8</p>
+              </div>
+              <div class="text-3xl">📖</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-600 text-sm">Tugas Aktif</p>
+                <p class="text-2xl font-bold text-orange-600">5</p>
+              </div>
+              <div class="text-3xl">📝</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-600 text-sm">Nilai Rata-rata</p>
+                <p class="text-2xl font-bold text-purple-600">85</p>
+              </div>
+              <div class="text-3xl">⭐</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Features -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Left Column -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Jadwal Hari Ini -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <span class="text-2xl mr-3">📅</span>
+                Jadwal Hari Ini
+              </h2>
+              <div class="space-y-3">
+                <div
+                  class="flex items-center justify-between p-3 bg-blue-50 rounded-lg"
+                >
+                  <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <div>
+                      <p class="font-medium">Matematika</p>
+                      <p class="text-sm text-gray-600">Kelas 5A</p>
+                    </div>
+                  </div>
+                  <span class="text-sm font-medium text-blue-600"
+                    >08:00 - 09:30</span
+                  >
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 bg-green-50 rounded-lg"
+                >
+                  <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div>
+                      <p class="font-medium">Bahasa Indonesia</p>
+                      <p class="text-sm text-gray-600">Kelas 5A</p>
+                    </div>
+                  </div>
+                  <span class="text-sm font-medium text-green-600"
+                    >10:00 - 11:30</span
+                  >
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 bg-orange-50 rounded-lg"
+                >
+                  <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
+                    <div>
+                      <p class="font-medium">IPA</p>
+                      <p class="text-sm text-gray-600">Kelas 5A</p>
+                    </div>
+                  </div>
+                  <span class="text-sm font-medium text-orange-600"
+                    >13:00 - 14:30</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Tools Pembelajaran -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <span class="text-2xl mr-3">🛠️</span>
+                Tools Pembelajaran
+              </h2>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <button
+                  onclick="openQuizMaker()"
+                  class="p-4 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg card-hover feature-icon"
+                >
+                  <div class="text-2xl mb-2">❓</div>
+                  <p class="text-sm font-medium">Buat Kuis</p>
+                </button>
+                <button
+                  onclick="openGradeBook()"
+                  class="p-4 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg card-hover feature-icon"
+                >
+                  <div class="text-2xl mb-2">📊</div>
+                  <p class="text-sm font-medium">Buku Nilai</p>
+                </button>
+                <button
+                  onclick="openAttendance()"
+                  class="p-4 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg card-hover feature-icon"
+                >
+                  <div class="text-2xl mb-2">✅</div>
+                  <p class="text-sm font-medium">Absensi</p>
+                </button>
+                <button
+                  onclick="openLessonPlan()"
+                  class="p-4 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-lg card-hover feature-icon"
+                >
+                  <div class="text-2xl mb-2">📋</div>
+                  <p class="text-sm font-medium">RPP</p>
+                </button>
+                <button
+                  onclick="openReports()"
+                  class="p-4 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-lg card-hover feature-icon"
+                >
+                  <div class="text-2xl mb-2">📈</div>
+                  <p class="text-sm font-medium">Laporan</p>
+                </button>
+                <button
+                  onclick="openStudentManager()"
+                  class="p-4 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-lg card-hover feature-icon"
+                >
+                  <div class="text-2xl mb-2">👥</div>
+                  <p class="text-sm font-medium">Kelola Siswa</p>
+                </button>
+                <button
+                  onclick="openScheduleManager()"
+                  class="p-4 bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-lg card-hover feature-icon"
+                >
+                  <div class="text-2xl mb-2">📅</div>
+                  <p class="text-sm font-medium">Kelola Jadwal</p>
+                </button>
+                <button
+                  onclick="openAnnouncementManager()"
+                  class="p-4 bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-lg card-hover feature-icon"
+                  id="announcementBtn"
+                  style="display: none"
+                >
+                  <div class="text-2xl mb-2">📢</div>
+                  <p class="text-sm font-medium">Kelola Pengumuman</p>
+                </button>
+                <button
+                  onclick="openBestStudentManager()"
+                  class="p-4 bg-gradient-to-br from-pink-500 to-pink-600 text-white rounded-lg card-hover feature-icon"
+                >
+                  <div class="text-2xl mb-2">🏆</div>
+                  <p class="text-sm font-medium">Siswa Terbaik</p>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="space-y-6">
+            <!-- Pengumuman -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <span class="text-2xl mr-3">📢</span>
+                Pengumuman
+              </h2>
+              <div class="space-y-3">
+                <div
+                  class="p-3 bg-yellow-50 border-l-4 border-yellow-400 rounded"
+                >
+                  <p class="text-sm font-medium">Rapat Guru</p>
+                  <p class="text-xs text-gray-600 mt-1">
+                    Besok, 14:00 di ruang guru
+                  </p>
+                </div>
+                <div class="p-3 bg-blue-50 border-l-4 border-blue-400 rounded">
+                  <p class="text-sm font-medium">Ujian Tengah Semester</p>
+                  <p class="text-xs text-gray-600 mt-1">
+                    Mulai 15 November 2024
+                  </p>
+                </div>
+                <div
+                  class="p-3 bg-green-50 border-l-4 border-green-400 rounded"
+                >
+                  <p class="text-sm font-medium">Pelatihan Digital</p>
+                  <p class="text-xs text-gray-600 mt-1">Pendaftaran dibuka</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Siswa Terbaik -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <span class="text-2xl mr-3">🏆</span>
+                Siswa Terbaik
+              </h2>
+              <div class="space-y-3">
+                <div class="text-center text-gray-500 py-6">
+                  <div class="text-4xl mb-2">🏆</div>
+                  <p class="text-sm mb-2">
+                    Belum ada siswa terbaik yang disetujui
+                  </p>
+                  <p class="text-xs text-gray-400">
+                    Guru dapat mengusulkan siswa terbaik melalui menu "Siswa
+                    Terbaik"
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <span class="text-2xl mr-3">⚡</span>
+                Aksi Cepat
+              </h2>
+              <div class="space-y-3">
+                <button
+                  onclick="quickAttendance()"
+                  class="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  Catat Kehadiran
+                </button>
+                <button
+                  onclick="quickGrade()"
+                  class="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                >
+                  Input Nilai
+                </button>
+                <button
+                  onclick="quickMessage()"
+                  class="w-full p-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+                >
+                  Kirim Pesan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal untuk Tools -->
+    <div
+      id="toolModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"
+    >
+      <div
+        class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 id="modalTitle" class="text-xl font-semibold">Tool</h3>
+          <button
+            onclick="closeModal()"
+            class="text-gray-500 hover:text-gray-700 p-1"
+          >
+            <span class="text-2xl">×</span>
+          </button>
+        </div>
+        <div id="modalContent" class="mb-6">
+          <!-- Content will be inserted here -->
+        </div>
+        <div class="flex justify-end space-x-3 border-t pt-4">
+          <button
+            onclick="closeModal()"
+            class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+          >
+            Tutup
+          </button>
+          <button
+            onclick="saveAction()"
+            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Authentication System with dynamic user storage
+      const defaultUsers = {
+        guru1: {
+          password: "guru123",
+          name: "Bu Sari Wijayanti",
+          role: "Guru Kelas 5A",
+          avatar: "👩‍🏫",
+        },
+        guru2: {
+          password: "guru456",
+          name: "Pak Budi Santoso",
+          role: "Guru Kelas 5B",
+          avatar: "👨‍🏫",
+        },
+        kepsek: {
+          password: "kepsek123",
+          name: "Drs. Ahmad Hidayat, M.Pd",
+          role: "Kepala Sekolah",
+          avatar: "👨‍💼",
+        },
+        admin: {
+          password: "admin123",
+          name: "Admin Sekolah",
+          role: "Administrator",
+          avatar: "👤",
+        },
+      };
+
+      // Load users from localStorage or use defaults
+      let users = JSON.parse(
+        localStorage.getItem("registeredUsers") || JSON.stringify(defaultUsers)
+      );
+      let currentUser = JSON.parse(
+        localStorage.getItem("currentUser") || "null"
+      );
+
+      // Save users to localStorage
+      function saveUsers() {
+        localStorage.setItem("registeredUsers", JSON.stringify(users));
+      }
+
+      // Data Storage System - will be loaded class-specifically
+      let studentsData = {
+        students: [],
+        grades: [],
+        attendance: [],
+        quizzes: [],
+      };
+
+      // Save data to localStorage with class-specific keys
+      function saveData() {
+        const userClass = extractClassFromRole(currentUser.role);
+        const studentsKey = userClass
+          ? `students_${userClass}`
+          : "students_default";
+        const gradesKey = userClass ? `grades_${userClass}` : "grades_default";
+        const attendanceKey = userClass
+          ? `attendance_${userClass}`
+          : "attendance_default";
+        const quizzesKey = userClass
+          ? `quizzes_${userClass}`
+          : "quizzes_default";
+
+        localStorage.setItem(
+          studentsKey,
+          JSON.stringify(studentsData.students)
+        );
+        localStorage.setItem(gradesKey, JSON.stringify(studentsData.grades));
+        localStorage.setItem(
+          attendanceKey,
+          JSON.stringify(studentsData.attendance)
+        );
+        localStorage.setItem(quizzesKey, JSON.stringify(studentsData.quizzes));
+      }
+
+      // Page Navigation Functions
+      function showLogin() {
+        document.getElementById("loginPage").classList.remove("hidden");
+        document.getElementById("signupPage").classList.add("hidden");
+        document.getElementById("mainDashboard").classList.add("hidden");
+        clearLoginForm();
+      }
+
+      function showSignup() {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("signupPage").classList.remove("hidden");
+        document.getElementById("mainDashboard").classList.add("hidden");
+        clearSignupForm();
+      }
+
+      function showDashboard() {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("signupPage").classList.add("hidden");
+        document.getElementById("mainDashboard").classList.remove("hidden");
+
+        // Update user info in header
+        document.getElementById(
+          "userGreeting"
+        ).textContent = `Selamat datang, ${currentUser.name}`;
+        document.getElementById("userRole").textContent = currentUser.role;
+        document.getElementById("userAvatar").textContent = currentUser.avatar;
+
+        // Update class-specific content
+        updateClassSpecificContent();
+        updateDashboardStats();
+
+        // Show announcement management button only for Kepala Sekolah
+        const announcementBtn = document.getElementById("announcementBtn");
+
+        if (
+          currentUser.role === "Kepala Sekolah" ||
+          currentUser.role === "Administrator"
+        ) {
+          announcementBtn.style.display = "block";
+        } else {
+          announcementBtn.style.display = "none";
+        }
+
+        // Setup logout button after dashboard is shown
+        setTimeout(setupLogoutButton, 100);
+      }
+
+      function clearLoginForm() {
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("loginError").classList.add("hidden");
+      }
+
+      function clearSignupForm() {
+        document.getElementById("signupName").value = "";
+        document.getElementById("signupUsername").value = "";
+        document.getElementById("signupPassword").value = "";
+        document.getElementById("signupPasswordConfirm").value = "";
+        document.getElementById("signupRole").value = "";
+        document.getElementById("selectedAvatar").value = "👩‍🏫";
+        document.getElementById("signupError").classList.add("hidden");
+        document.getElementById("signupSuccess").classList.add("hidden");
+
+        // Reset avatar selection
+        document.querySelectorAll(".avatar-btn").forEach((btn) => {
+          btn.classList.remove("border-green-500", "bg-green-50");
+          btn.classList.add("border-gray-300");
+        });
+        document
+          .querySelector(".avatar-btn")
+          .classList.add("border-green-500", "bg-green-50");
+      }
+
+      // Avatar selection
+      function selectAvatar(avatar) {
+        document.getElementById("selectedAvatar").value = avatar;
+
+        // Update visual selection
+        document.querySelectorAll(".avatar-btn").forEach((btn) => {
+          btn.classList.remove("border-green-500", "bg-green-50");
+          btn.classList.add("border-gray-300");
+        });
+
+        event.target.classList.remove("border-gray-300");
+        event.target.classList.add("border-green-500", "bg-green-50");
+      }
+
+      // Authentication Functions
+      function login(username, password) {
+        if (users[username] && users[username].password === password) {
+          currentUser = {
+            username: username,
+            ...users[username],
+          };
+          localStorage.setItem("currentUser", JSON.stringify(currentUser));
+          showDashboard();
+          return true;
+        }
+        return false;
+      }
+
+      function signup(userData) {
+        const { username, password, passwordConfirm, name, role, avatar } =
+          userData;
+
+        // Validation
+        if (!username || !password || !passwordConfirm || !name || !role) {
+          return { success: false, message: "Semua field harus diisi!" };
+        }
+
+        if (username.length < 4) {
+          return { success: false, message: "Username minimal 4 karakter!" };
+        }
+
+        if (password.length < 6) {
+          return { success: false, message: "Password minimal 6 karakter!" };
+        }
+
+        if (password !== passwordConfirm) {
+          return {
+            success: false,
+            message: "Password dan konfirmasi password tidak sama!",
+          };
+        }
+
+        if (users[username]) {
+          return {
+            success: false,
+            message: "Username sudah digunakan! Pilih username lain.",
+          };
+        }
+
+        // Create new user
+        users[username] = {
+          password: password,
+          name: name,
+          role: role,
+          avatar: avatar || "👩‍🏫",
+          createdAt: new Date().toISOString(),
+        };
+
+        saveUsers();
+        return {
+          success: true,
+          message: "Akun berhasil dibuat! Silakan login.",
+        };
+      }
+
+      function logout() {
+        if (confirm("Apakah Anda yakin ingin keluar dari Portal Guru SD?")) {
+          currentUser = null;
+          localStorage.removeItem("currentUser");
+          showLogin();
+        }
+      }
+
+      // Form Handlers
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value;
+
+          if (login(username, password)) {
+            document.getElementById("loginError").classList.add("hidden");
+          } else {
+            document.getElementById("loginError").classList.remove("hidden");
+            document.getElementById("password").value = "";
+          }
+        });
+
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const userData = {
+            username: document.getElementById("signupUsername").value.trim(),
+            password: document.getElementById("signupPassword").value,
+            passwordConfirm: document.getElementById("signupPasswordConfirm")
+              .value,
+            name: document.getElementById("signupName").value.trim(),
+            role: document.getElementById("signupRole").value,
+            avatar: document.getElementById("selectedAvatar").value,
+          };
+
+          const result = signup(userData);
+
+          if (result.success) {
+            document.getElementById("signupError").classList.add("hidden");
+            document.getElementById("signupSuccess").classList.remove("hidden");
+            document.getElementById("signupSuccess").textContent =
+              result.message;
+
+            // Auto redirect to login after 2 seconds
+            setTimeout(() => {
+              showLogin();
+            }, 2000);
+          } else {
+            document.getElementById("signupSuccess").classList.add("hidden");
+            document.getElementById("signupError").classList.remove("hidden");
+            document.getElementById("signupError").textContent = result.message;
+          }
+        });
+
+      // Logout button event listener - Fixed
+      function setupLogoutButton() {
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+          // Remove any existing listeners
+          logoutBtn.removeEventListener("click", logout);
+          // Add new listener
+          logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            logout();
+          });
+        }
+      }
+
+      // Modal functions
+      function openModal(title, content) {
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalContent").innerHTML = content;
+        document.getElementById("toolModal").classList.remove("hidden");
+        document.getElementById("toolModal").classList.add("flex");
+      }
+
+      function closeModal() {
+        document.getElementById("toolModal").classList.add("hidden");
+        document.getElementById("toolModal").classList.remove("flex");
+      }
+
+      // Tool functions
+      function openQuizMaker() {
+        const quizList = studentsData.quizzes
+          .map(
+            (quiz) =>
+              `<div class="p-2 bg-gray-50 rounded mb-2">
+                    <strong>${quiz.title}</strong> - ${quiz.subject} (${quiz.questions} soal)
+                    <br><small>Dibuat: ${quiz.date}</small>
+                </div>`
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Judul Kuis</label>
+                        <input id="quizTitle" type="text" class="w-full p-2 border rounded-lg" placeholder="Masukkan judul kuis">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Mata Pelajaran</label>
+                        <input id="quizSubject" type="text" class="w-full p-2 border rounded-lg" placeholder="Masukkan mata pelajaran (contoh: Matematika)">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Jumlah Soal</label>
+                        <input id="quizQuestions" type="number" class="w-full p-2 border rounded-lg" placeholder="10" min="1" max="50">
+                    </div>
+                    ${
+                      quizList
+                        ? `<div class="mt-4"><h4 class="font-medium mb-2">Kuis Tersimpan:</h4>${quizList}</div>`
+                        : ""
+                    }
+                </div>
+            `;
+        openModal("Buat Kuis Baru", content);
+      }
+
+      function openGradeBook() {
+        const studentOptions = studentsData.students
+          .map((student) => `<option value="${student}">${student}</option>`)
+          .join("");
+
+        const gradesList = studentsData.grades
+          .slice(-10)
+          .map(
+            (grade) =>
+              `<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg mb-2 border-l-4 border-blue-400">
+                    <div>
+                        <p class="font-medium text-gray-800">${
+                          grade.student
+                        }</p>
+                        <p class="text-sm text-gray-600">${grade.subject}</p>
+                        <p class="text-xs text-gray-500">${grade.date}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-2xl font-bold ${
+                          grade.score >= 80
+                            ? "text-green-600"
+                            : grade.score >= 70
+                            ? "text-yellow-600"
+                            : "text-red-600"
+                        }">${grade.score}</span>
+                        <p class="text-xs text-gray-500">
+                            ${
+                              grade.score >= 80
+                                ? "Baik"
+                                : grade.score >= 70
+                                ? "Cukup"
+                                : "Perlu Perbaikan"
+                            }
+                        </p>
+                    </div>
+                </div>`
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-3">📝 Input Nilai Baru</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Pilih Siswa</label>
+                                <select id="gradeStudent" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">-- Pilih Siswa --</option>
+                                    ${studentOptions}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Mata Pelajaran</label>
+                                <input id="gradeSubject" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan mata pelajaran (contoh: Matematika)">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Nilai (0-100)</label>
+                                <input id="gradeScore" type="number" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan nilai (contoh: 85)" min="0" max="100">
+                                <div class="mt-2 text-xs text-gray-600">
+                                    <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded mr-2">80-100: Baik</span>
+                                    <span class="inline-block bg-yellow-100 text-yellow-800 px-2 py-1 rounded mr-2">70-79: Cukup</span>
+                                    <span class="inline-block bg-red-100 text-red-800 px-2 py-1 rounded">0-69: Perlu Perbaikan</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Catatan (Opsional)</label>
+                                <textarea id="gradeNote" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" rows="2" placeholder="Tambahkan catatan untuk nilai ini..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${
+                      gradesList
+                        ? `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 mb-3 flex items-center">
+                            📊 Nilai Tersimpan (10 Terakhir)
+                            <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${studentsData.grades.length} total</span>
+                        </h4>
+                        <div class="max-h-64 overflow-y-auto space-y-2">
+                            ${gradesList}
+                        </div>
+                    </div>
+                    `
+                        : '<div class="text-center text-gray-500 py-4">Belum ada nilai tersimpan</div>'
+                    }
+                </div>
+            `;
+        openModal("Buku Nilai - Input & Riwayat", content);
+      }
+
+      function openAttendance() {
+        // Always show attendance list, even if no students
+        let studentCheckboxes = "";
+
+        if (studentsData.students.length === 0) {
+          studentCheckboxes = `
+                    <div class="text-center text-gray-500 py-6">
+                        <div class="text-4xl mb-3">👥</div>
+                        <p class="text-sm mb-2">Belum ada siswa yang terdaftar</p>
+                        <p class="text-xs text-gray-400 mb-4">Tambahkan siswa terlebih dahulu untuk melakukan absensi</p>
+                        <button onclick="closeModal(); openStudentManager();" class="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600">
+                            ➕ Kelola Siswa
+                        </button>
+                    </div>
+                `;
+        } else {
+          studentCheckboxes = studentsData.students
+            .map(
+              (student, index) =>
+                `<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg mb-2 border border-gray-200">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">${
+                              index + 1
+                            }</span>
+                            <label for="attend_${student.replace(
+                              /\s+/g,
+                              "_"
+                            )}" class="font-medium text-gray-800">${student}</label>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <input type="checkbox" id="attend_${student.replace(
+                              /\s+/g,
+                              "_"
+                            )}" checked class="attendance-checkbox w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <select class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onchange="updateAttendanceStatus(this)">
+                                <option value="hadir">✅ Hadir</option>
+                                <option value="sakit">🤒 Sakit</option>
+                                <option value="izin">📝 Izin</option>
+                                <option value="alpha">❌ Alpha</option>
+                            </select>
+                        </div>
+                    </div>`
+            )
+            .join("");
+        }
+
+        const attendanceHistory = studentsData.attendance
+          .slice(-5)
+          .map(
+            (record) =>
+              `<div class="p-3 bg-gray-50 rounded-lg mb-2 border-l-4 border-blue-400">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-medium text-gray-800">${record.subject}</p>
+                            <p class="text-sm text-gray-600">${record.date}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-lg font-bold text-blue-600">${record.present}/${record.total}</span>
+                            <p class="text-xs text-gray-500">siswa hadir</p>
+                        </div>
+                    </div>
+                </div>`
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-6">
+                    <!-- Form Absensi -->
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-4 flex items-center">
+                            ✅ Input Absensi Hari Ini
+                            <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${
+                              studentsData.students.length
+                            } siswa</span>
+                        </h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Tanggal</label>
+                                <input id="attendanceDate" type="date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="${
+                                  new Date().toISOString().split("T")[0]
+                                }">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Mata Pelajaran</label>
+                                <input id="attendanceSubject" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Matematika, Bahasa Indonesia">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daftar Kehadiran -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            👥 Daftar Kehadiran Siswa
+                            ${
+                              studentsData.students.length > 0
+                                ? `<span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Kelas ${
+                                    extractClassFromRole(currentUser.role) ||
+                                    "5A"
+                                  }</span>`
+                                : ""
+                            }
+                        </h4>
+                        
+                        <div class="max-h-64 overflow-y-auto border border-gray-200 rounded-lg p-3 bg-white">
+                            ${studentCheckboxes}
+                        </div>
+                        
+                        ${
+                          studentsData.students.length > 0
+                            ? `
+                        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <p class="text-sm text-yellow-800">
+                                💡 <strong>Cara Penggunaan:</strong> Centang kotak untuk siswa yang hadir, pilih status kehadiran di dropdown. 
+                                Siswa yang tidak dicentang akan otomatis tercatat sebagai tidak hadir sesuai status yang dipilih.
+                            </p>
+                        </div>
+                        `
+                            : ""
+                        }
+                    </div>
+                    
+                    ${
+                      attendanceHistory
+                        ? `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            📊 Riwayat Absensi (5 Terakhir)
+                            <span class="ml-2 bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">${studentsData.attendance.length} total</span>
+                        </h4>
+                        <div class="max-h-48 overflow-y-auto space-y-2">
+                            ${attendanceHistory}
+                        </div>
+                    </div>
+                    `
+                        : ""
+                    }
+                </div>
+            `;
+        openModal("Absensi Siswa - Input Kehadiran", content);
+      }
+
+      function openLessonPlan() {
+        const content = `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Mata Pelajaran</label>
+                        <input type="text" class="w-full p-2 border rounded-lg" placeholder="Masukkan mata pelajaran (contoh: Matematika)">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Kelas</label>
+                        <select class="w-full p-2 border rounded-lg">
+                            <option>5A</option>
+                            <option>5B</option>
+                            <option>5C</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Materi</label>
+                        <input type="text" class="w-full p-2 border rounded-lg" placeholder="Contoh: Pecahan Sederhana">
+                    </div>
+                </div>
+            `;
+        openModal("Buat RPP Baru", content);
+      }
+
+      function openReports() {
+        const content = `
+                <div class="space-y-4">
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                        <h4 class="font-medium text-green-800 mb-3">📊 Generate Laporan</h4>
+                        <p class="text-sm text-green-600">Pilih jenis laporan dan format yang diinginkan</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Jenis Laporan</label>
+                        <select id="reportType" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500">
+                            <option value="nilai">Laporan Nilai</option>
+                            <option value="kehadiran">Laporan Kehadiran</option>
+                            <option value="perkembangan">Laporan Perkembangan</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Periode</label>
+                        <select id="reportPeriod" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500">
+                            <option value="bulan">Bulan ini</option>
+                            <option value="semester">Semester ini</option>
+                            <option value="tahun">Tahun ajaran</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Format</label>
+                        <select id="reportFormat" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500">
+                            <option value="pdf">PDF</option>
+                            <option value="excel">Excel</option>
+                        </select>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <p class="text-sm text-blue-800">
+                            💡 <strong>Info:</strong> Laporan akan dibuat berdasarkan data siswa, nilai, dan absensi yang tersimpan.
+                        </p>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 pt-4 border-t">
+                        <button onclick="closeModal()" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                            Batal
+                        </button>
+                        <button onclick="generateReport()" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                            Generate Laporan
+                        </button>
+                    </div>
+                </div>
+            `;
+        openModal("Generate Laporan", content);
+      }
+
+      function openStudentManager() {
+        const studentsList = studentsData.students
+          .map(
+            (student, index) =>
+              `<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg mb-2">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">${
+                          index + 1
+                        }</span>
+                        <span class="font-medium">${student}</span>
+                    </div>
+                    <button onclick="removeStudent(${index})" class="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
+                        Hapus
+                    </button>
+                </div>`
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-3">➕ Tambah Siswa Baru</h4>
+                        <div class="flex space-x-2">
+                            <input id="newStudentName" type="text" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan nama siswa lengkap">
+                            <button onclick="addStudent()" class="px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-medium">
+                                Tambah
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 mb-3 flex items-center">
+                            👥 Daftar Siswa Kelas 5A
+                            <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${
+                              studentsData.students.length
+                            } siswa</span>
+                        </h4>
+                        <div class="max-h-64 overflow-y-auto space-y-2">
+                            ${
+                              studentsList ||
+                              '<div class="text-center text-gray-500 py-4">Belum ada siswa. Tambahkan siswa pertama!</div>'
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                        <p class="text-sm text-yellow-800">
+                            💡 <strong>Tips:</strong> Masukkan nama lengkap siswa sesuai dengan data resmi sekolah. 
+                            Data siswa akan tersimpan dan digunakan untuk absensi, nilai, dan laporan.
+                        </p>
+                    </div>
+                </div>
+            `;
+        openModal("Kelola Data Siswa", content);
+      }
+
+      // Quick action functions
+      function quickAttendance() {
+        if (studentsData.students.length === 0) {
+          alert(
+            'Belum ada siswa yang terdaftar. Silakan tambahkan siswa terlebih dahulu melalui menu "Kelola Siswa".'
+          );
+          return;
+        }
+
+        const studentCheckboxes = studentsData.students
+          .slice(0, 10)
+          .map(
+            (student) =>
+              `<div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <span class="text-sm">${student}</span>
+                    <div class="flex space-x-2">
+                        <button onclick="markAttendance('${student}', 'hadir')" class="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600">Hadir</button>
+                        <button onclick="markAttendance('${student}', 'alpha')" class="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">Alpha</button>
+                    </div>
+                </div>`
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <h4 class="font-medium text-blue-800 mb-2">⚡ Absensi Cepat - ${Math.min(
+                          10,
+                          studentsData.students.length
+                        )} Siswa Pertama</h4>
+                        <p class="text-sm text-blue-600">Klik tombol untuk menandai kehadiran siswa hari ini</p>
+                    </div>
+                    <div class="space-y-2 max-h-64 overflow-y-auto">
+                        ${studentCheckboxes}
+                    </div>
+                    <div class="text-center">
+                        <button onclick="openAttendance(); closeModal();" class="text-blue-600 hover:text-blue-800 text-sm underline">
+                            Buka absensi lengkap untuk semua siswa →
+                        </button>
+                    </div>
+                </div>
+            `;
+        openModal("Absensi Cepat", content);
+      }
+
+      function quickGrade() {
+        if (studentsData.students.length === 0) {
+          alert(
+            'Belum ada siswa yang terdaftar. Silakan tambahkan siswa terlebih dahulu melalui menu "Kelola Siswa".'
+          );
+          return;
+        }
+
+        const topStudents = studentsData.students.slice(0, 8);
+        const studentButtons = topStudents
+          .map(
+            (student) =>
+              `<button onclick="quickGradeStudent('${student}')" class="p-3 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-lg hover:from-green-500 hover:to-green-600 transition-all text-sm font-medium">
+                    ${student}
+                </button>`
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-4">
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <h4 class="font-medium text-green-800 mb-2">⚡ Input Nilai Cepat</h4>
+                        <p class="text-sm text-green-600">Pilih siswa untuk input nilai dengan cepat</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        ${studentButtons}
+                    </div>
+                    <div class="text-center">
+                        <button onclick="openGradeBook(); closeModal();" class="text-green-600 hover:text-green-800 text-sm underline">
+                            Buka buku nilai lengkap →
+                        </button>
+                    </div>
+                </div>
+            `;
+        openModal("Input Nilai Cepat", content);
+      }
+
+      function quickMessage() {
+        const messageTemplates = [
+          {
+            title: "Pengumuman Tugas",
+            text: "Jangan lupa mengerjakan tugas yang diberikan hari ini. Kumpulkan besok pagi.",
+          },
+          {
+            title: "Reminder Ujian",
+            text: "Besok akan ada ujian. Jangan lupa belajar dan bawa alat tulis lengkap.",
+          },
+          {
+            title: "Pujian Prestasi",
+            text: "Selamat! Nilai kalian sangat baik. Pertahankan semangat belajarnya.",
+          },
+          {
+            title: "Motivasi Belajar",
+            text: "Tetap semangat belajar! Setiap usaha kalian pasti akan membuahkan hasil.",
+          },
+        ];
+
+        const templateButtons = messageTemplates
+          .map(
+            (template, index) =>
+              `<button onclick="selectMessageTemplate('${
+                template.text
+              }')" class="p-3 bg-purple-100 hover:bg-purple-200 rounded-lg text-left transition-colors">
+                    <p class="font-medium text-purple-800">${template.title}</p>
+                    <p class="text-sm text-purple-600 mt-1">${template.text.substring(
+                      0,
+                      50
+                    )}...</p>
+                </button>`
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-4">
+                    <div class="bg-purple-50 p-3 rounded-lg">
+                        <h4 class="font-medium text-purple-800 mb-2">⚡ Kirim Pesan Cepat</h4>
+                        <p class="text-sm text-purple-600">Pilih template pesan atau tulis pesan kustom</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Template Pesan:</label>
+                        <div class="space-y-2">
+                            ${templateButtons}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Atau tulis pesan kustom:</label>
+                        <textarea id="quickMessageText" class="w-full p-3 border rounded-lg" rows="3" placeholder="Tulis pesan untuk siswa..."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Kirim ke:</label>
+                        <select id="quickMessageTarget" class="w-full p-2 border rounded-lg">
+                            <option>Semua Siswa Kelas 5A</option>
+                            <option>Siswa dengan Nilai Rendah</option>
+                            <option>Siswa Berprestasi</option>
+                            <option>Orang Tua Siswa</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+        openModal("Kirim Pesan Cepat", content);
+      }
+
+      // Student management functions
+      function addStudent() {
+        const nameInput = document.getElementById("newStudentName");
+        const studentName = nameInput.value.trim();
+
+        if (studentName) {
+          if (studentsData.students.includes(studentName)) {
+            alert("Nama siswa sudah ada dalam daftar!");
+            return;
+          }
+
+          studentsData.students.push(studentName);
+          saveData();
+          updateDashboardStats();
+          nameInput.value = "";
+
+          alert(`Siswa "${studentName}" berhasil ditambahkan!`);
+
+          // Refresh the modal content to show updated list
+          setTimeout(() => {
+            openStudentManager();
+          }, 100);
+        } else {
+          alert("Mohon masukkan nama siswa!");
+        }
+      }
+
+      function removeStudent(index) {
+        const studentName = studentsData.students[index];
+
+        if (
+          confirm(
+            `Apakah Anda yakin ingin menghapus "${studentName}" dari daftar siswa?\n\nPerhatian: Data nilai dan absensi siswa ini juga akan terhapus!`
+          )
+        ) {
+          // Remove student from list
+          studentsData.students.splice(index, 1);
+
+          // Remove related grades and attendance
+          studentsData.grades = studentsData.grades.filter(
+            (grade) => grade.student !== studentName
+          );
+          studentsData.attendance = studentsData.attendance.filter(
+            (attendance) =>
+              !attendance.students || !attendance.students.includes(studentName)
+          );
+
+          saveData();
+          updateDashboardStats();
+          alert(`Siswa "${studentName}" berhasil dihapus!`);
+
+          // Refresh the modal content to show updated list
+          setTimeout(() => {
+            openStudentManager();
+          }, 100);
+        }
+      }
+
+      // Helper functions for quick actions
+      function markAttendance(studentName, status) {
+        const today = new Date().toLocaleDateString("id-ID");
+        const statusText = status === "hadir" ? "hadir" : "tidak hadir (alpha)";
+
+        // Simple storage for quick attendance
+        let quickAttendance = JSON.parse(
+          localStorage.getItem("quickAttendance") || "{}"
+        );
+        if (!quickAttendance[today]) quickAttendance[today] = {};
+        quickAttendance[today][studentName] = status;
+        localStorage.setItem(
+          "quickAttendance",
+          JSON.stringify(quickAttendance)
+        );
+
+        alert(`${studentName} berhasil ditandai ${statusText} untuk hari ini!`);
+
+        // Update button appearance
+        const buttons = event.target.parentElement.querySelectorAll("button");
+        buttons.forEach((btn) =>
+          btn.classList.remove("ring-2", "ring-offset-2")
+        );
+        event.target.classList.add(
+          "ring-2",
+          "ring-offset-2",
+          status === "hadir" ? "ring-green-400" : "ring-red-400"
+        );
+      }
+
+      function quickGradeStudent(studentName) {
+        const content = `
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <h4 class="font-medium text-blue-800">Input Nilai untuk: ${studentName}</h4>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Mata Pelajaran</label>
+                        <input id="quickGradeSubject" type="text" class="w-full p-2 border rounded-lg" placeholder="Masukkan mata pelajaran (contoh: Matematika)">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Nilai (0-100)</label>
+                        <input id="quickGradeScore" type="number" class="w-full p-2 border rounded-lg" placeholder="85" min="0" max="100">
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3">
+                        <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Batal</button>
+                        <button onclick="saveQuickGrade('${studentName}')" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Simpan Nilai</button>
+                    </div>
+                </div>
+            `;
+        openModal(`Input Nilai - ${studentName}`, content);
+      }
+
+      function saveQuickGrade(studentName) {
+        const subject = document
+          .getElementById("quickGradeSubject")
+          .value.trim();
+        const score = document.getElementById("quickGradeScore").value;
+
+        if (subject && score && score >= 0 && score <= 100) {
+          studentsData.grades.push({
+            id: Date.now(),
+            student: studentName,
+            subject: subject,
+            score: parseInt(score),
+            note: "Input cepat",
+            date: new Date().toLocaleDateString("id-ID"),
+            time: new Date().toLocaleTimeString("id-ID", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          });
+          saveData();
+
+          const category =
+            score >= 80 ? "Baik" : score >= 70 ? "Cukup" : "Perlu Perbaikan";
+          alert(
+            `Nilai berhasil disimpan!\n${studentName} - ${subject}: ${score} (${category})`
+          );
+          closeModal();
+        } else {
+          alert("Mohon masukkan nilai yang valid (0-100)!");
+        }
+      }
+
+      function selectMessageTemplate(templateText) {
+        document.getElementById("quickMessageText").value = templateText;
+      }
+
+      function saveAction() {
+        const modalTitle = document.getElementById("modalTitle").textContent;
+
+        if (modalTitle === "Buat Kuis Baru") {
+          const title = document.getElementById("quizTitle").value.trim();
+          const subject = document.getElementById("quizSubject").value.trim();
+          const questions = document.getElementById("quizQuestions").value;
+
+          if (title && subject && questions) {
+            studentsData.quizzes.push({
+              id: Date.now(),
+              title: title,
+              subject: subject,
+              questions: parseInt(questions),
+              date: new Date().toLocaleDateString("id-ID"),
+            });
+            saveData();
+            alert("Kuis berhasil dibuat dan disimpan!");
+          } else {
+            alert("Mohon lengkapi semua field!");
+            return;
+          }
+        } else if (modalTitle === "Buku Nilai - Input & Riwayat") {
+          const student = document.getElementById("gradeStudent").value;
+          const subject = document.getElementById("gradeSubject").value.trim();
+          const score = document.getElementById("gradeScore").value;
+          const note = document.getElementById("gradeNote").value;
+
+          if (student && subject && score) {
+            if (score < 0 || score > 100) {
+              alert("Nilai harus antara 0-100!");
+              return;
+            }
+
+            studentsData.grades.push({
+              id: Date.now(),
+              student: student,
+              subject: subject,
+              score: parseInt(score),
+              note: note || "",
+              date: new Date().toLocaleDateString("id-ID"),
+              time: new Date().toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
+            });
+            saveData();
+
+            // Show success message with grade category
+            const category =
+              score >= 80 ? "Baik" : score >= 70 ? "Cukup" : "Perlu Perbaikan";
+            alert(
+              `Nilai berhasil disimpan!\n\nSiswa: ${student}\nMata Pelajaran: ${subject}\nNilai: ${score} (${category})`
+            );
+
+            // Clear form
+            document.getElementById("gradeStudent").value = "";
+            document.getElementById("gradeScore").value = "";
+            document.getElementById("gradeNote").value = "";
+          } else {
+            alert("Mohon lengkapi minimal Siswa, Mata Pelajaran, dan Nilai!");
+            return;
+          }
+        } else if (modalTitle === "Absensi Siswa") {
+          const date = document.getElementById("attendanceDate").value;
+          const subject = document
+            .getElementById("attendanceSubject")
+            .value.trim();
+          const checkboxes = document.querySelectorAll(".attendance-checkbox");
+          let presentCount = 0;
+
+          checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) presentCount++;
+          });
+
+          if (date && subject) {
+            studentsData.attendance.push({
+              id: Date.now(),
+              date: new Date(date).toLocaleDateString("id-ID"),
+              subject: subject,
+              present: presentCount,
+              total: studentsData.students.length,
+            });
+            saveData();
+            alert("Data absensi berhasil disimpan!");
+          } else {
+            alert("Mohon lengkapi tanggal dan mata pelajaran!");
+            return;
+          }
+        } else if (modalTitle === "Kirim Pesan Cepat") {
+          const messageText = document.getElementById("quickMessageText").value;
+          const target = document.getElementById("quickMessageTarget").value;
+
+          if (messageText.trim()) {
+            // Save message to localStorage
+            let messages = JSON.parse(localStorage.getItem("messages") || "[]");
+            messages.push({
+              id: Date.now(),
+              text: messageText,
+              target: target,
+              date: new Date().toLocaleDateString("id-ID"),
+              time: new Date().toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
+            });
+            localStorage.setItem("messages", JSON.stringify(messages));
+
+            alert(`Pesan berhasil dikirim ke: ${target}\n\n"${messageText}"`);
+          } else {
+            alert("Mohon tulis pesan terlebih dahulu!");
+            return;
+          }
+        } else {
+          alert("Data berhasil disimpan!");
+        }
+
+        closeModal();
+      }
+
+      function updateAttendanceStatus(select) {
+        const checkbox = select.parentElement.querySelector(
+          ".attendance-checkbox"
+        );
+        if (select.value === "hadir") {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
+      }
+
+      // Report generation functions
+      function generateReport() {
+        const reportType = document.getElementById("reportType").value;
+        const reportPeriod = document.getElementById("reportPeriod").value;
+        const reportFormat = document.getElementById("reportFormat").value;
+
+        if (studentsData.students.length === 0) {
+          alert(
+            "Tidak ada data siswa untuk dibuat laporan. Silakan tambahkan siswa terlebih dahulu."
+          );
+          return;
+        }
+
+        if (reportFormat === "pdf") {
+          generatePDFReport(reportType, reportPeriod);
+        } else {
+          generateExcelReport(reportType, reportPeriod);
+        }
+
+        closeModal();
+      }
+
+      function generatePDFReport(type, period) {
+        const reportData = prepareReportData(type, period);
+
+        // Create PDF content
+        let pdfContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Laporan ${reportData.title}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                        .info { margin-bottom: 20px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; font-weight: bold; }
+                        .summary { background-color: #f9f9f9; padding: 15px; margin: 20px 0; border-radius: 5px; }
+                        .footer { margin-top: 30px; text-align: right; font-size: 12px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>LAPORAN ${reportData.title.toUpperCase()}</h1>
+                        <h2>SD NEGERI CONTOH</h2>
+                        <p>Kelas 5A - Tahun Ajaran 2024/2025</p>
+                    </div>
+                    
+                    <div class="info">
+                        <p><strong>Periode:</strong> ${
+                          reportData.periodText
+                        }</p>
+                        <p><strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString(
+                          "id-ID"
+                        )}</p>
+                        <p><strong>Guru:</strong> ${currentUser.name}</p>
+                    </div>
+                    
+                    <div class="summary">
+                        <h3>Ringkasan</h3>
+                        <p>Total Siswa: ${
+                          studentsData.students.length
+                        } orang</p>
+                        ${reportData.summary}
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                ${reportData.headers
+                                  .map((header) => `<th>${header}</th>`)
+                                  .join("")}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${reportData.rows
+                              .map(
+                                (row) =>
+                                  `<tr>${row
+                                    .map((cell) => `<td>${cell}</td>`)
+                                    .join("")}</tr>`
+                              )
+                              .join("")}
+                        </tbody>
+                    </table>
+                    
+                    <div class="footer">
+                        <p>Laporan dibuat otomatis oleh Portal Guru SD</p>
+                        <p>Dicetak pada: ${new Date().toLocaleString(
+                          "id-ID"
+                        )}</p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+        // Create and download PDF
+        const blob = new Blob([pdfContent], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Laporan_${type}_${period}_${
+          new Date().toISOString().split("T")[0]
+        }.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        alert(
+          "Laporan PDF berhasil diunduh! File dalam format HTML yang bisa dicetak sebagai PDF."
+        );
+      }
+
+      function generateExcelReport(type, period) {
+        const reportData = prepareReportData(type, period);
+
+        // Create CSV content (Excel compatible)
+        let csvContent = `Laporan ${reportData.title}\n`;
+        csvContent += `SD Negeri Contoh - Kelas 5A\n`;
+        csvContent += `Periode: ${reportData.periodText}\n`;
+        csvContent += `Tanggal: ${new Date().toLocaleDateString("id-ID")}\n\n`;
+
+        // Add headers
+        csvContent += reportData.headers.join(",") + "\n";
+
+        // Add data rows
+        reportData.rows.forEach((row) => {
+          csvContent += row.map((cell) => `"${cell}"`).join(",") + "\n";
+        });
+
+        // Add summary
+        csvContent += "\nRingkasan:\n";
+        csvContent += `Total Siswa,${studentsData.students.length}\n`;
+        csvContent += reportData.summary
+          .replace(/<[^>]*>/g, "")
+          .replace(/\n/g, "\n");
+
+        // Create and download Excel file
+        const blob = new Blob([csvContent], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Laporan_${type}_${period}_${
+          new Date().toISOString().split("T")[0]
+        }.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        alert(
+          "Laporan Excel berhasil diunduh! File dalam format CSV yang bisa dibuka di Excel."
+        );
+      }
+
+      function prepareReportData(type, period) {
+        const periodText = {
+          bulan: "Bulan ini",
+          semester: "Semester ini",
+          tahun: "Tahun ajaran 2024/2025",
+        }[period];
+
+        if (type === "nilai") {
+          const headers = [
+            "No",
+            "Nama Siswa",
+            "Matematika",
+            "B. Indonesia",
+            "IPA",
+            "IPS",
+            "Rata-rata",
+          ];
+          const rows = [];
+
+          studentsData.students.forEach((student, index) => {
+            const studentGrades = studentsData.grades.filter(
+              (g) => g.student === student
+            );
+            const subjects = ["Matematika", "Bahasa Indonesia", "IPA", "IPS"];
+            const scores = subjects.map((subject) => {
+              const grade = studentGrades.find((g) => g.subject === subject);
+              return grade ? grade.score : "-";
+            });
+
+            const validScores = scores.filter((s) => s !== "-");
+            const average =
+              validScores.length > 0
+                ? Math.round(
+                    validScores.reduce((a, b) => a + b, 0) / validScores.length
+                  )
+                : "-";
+
+            rows.push([index + 1, student, ...scores, average]);
+          });
+
+          const totalGrades = studentsData.grades.length;
+          const avgScore =
+            totalGrades > 0
+              ? Math.round(
+                  studentsData.grades.reduce((sum, g) => sum + g.score, 0) /
+                    totalGrades
+                )
+              : 0;
+
+          return {
+            title: "Nilai Siswa",
+            periodText,
+            headers,
+            rows,
+            summary: `<p>Total Nilai Tersimpan: ${totalGrades}</p><p>Rata-rata Kelas: ${avgScore}</p>`,
+          };
+        } else if (type === "kehadiran") {
+          const headers = [
+            "No",
+            "Nama Siswa",
+            "Total Hadir",
+            "Total Alpha",
+            "Persentase Kehadiran",
+          ];
+          const rows = [];
+
+          studentsData.students.forEach((student, index) => {
+            // Simple attendance calculation (you can enhance this based on your attendance data structure)
+            const totalSessions = studentsData.attendance.length;
+            const presentSessions =
+              Math.floor(Math.random() * totalSessions) +
+              Math.floor(totalSessions * 0.8); // Sample data
+            const absentSessions = totalSessions - presentSessions;
+            const percentage =
+              totalSessions > 0
+                ? Math.round((presentSessions / totalSessions) * 100)
+                : 100;
+
+            rows.push([
+              index + 1,
+              student,
+              presentSessions,
+              absentSessions,
+              `${percentage}%`,
+            ]);
+          });
+
+          return {
+            title: "Kehadiran Siswa",
+            periodText,
+            headers,
+            rows,
+            summary: `<p>Total Sesi Pembelajaran: ${studentsData.attendance.length}</p>`,
+          };
+        } else {
+          // perkembangan
+          const headers = [
+            "No",
+            "Nama Siswa",
+            "Nilai Tertinggi",
+            "Nilai Terendah",
+            "Trend",
+            "Catatan",
+          ];
+          const rows = [];
+
+          studentsData.students.forEach((student, index) => {
+            const studentGrades = studentsData.grades.filter(
+              (g) => g.student === student
+            );
+            if (studentGrades.length > 0) {
+              const scores = studentGrades.map((g) => g.score);
+              const highest = Math.max(...scores);
+              const lowest = Math.min(...scores);
+              const trend =
+                scores.length > 1
+                  ? scores[scores.length - 1] > scores[0]
+                    ? "Meningkat"
+                    : "Menurun"
+                  : "Stabil";
+              const note =
+                highest >= 80
+                  ? "Baik"
+                  : highest >= 70
+                  ? "Cukup"
+                  : "Perlu Perhatian";
+
+              rows.push([index + 1, student, highest, lowest, trend, note]);
+            } else {
+              rows.push([index + 1, student, "-", "-", "-", "Belum ada nilai"]);
+            }
+          });
+
+          return {
+            title: "Perkembangan Siswa",
+            periodText,
+            headers,
+            rows,
+            summary: `<p>Siswa dengan nilai baik (≥80): ${
+              rows.filter((r) => r[5] === "Baik").length
+            }</p>`,
+          };
+        }
+      }
+
+      // Update class-specific content based on user role
+      function updateClassSpecificContent() {
+        const userClass = extractClassFromRole(currentUser.role);
+        const classDisplay = userClass || "Semua Kelas";
+
+        // Update header subtitle
+        const headerSubtitle = document.getElementById("dashboardSubtitle");
+        if (headerSubtitle) {
+          headerSubtitle.textContent = `Dashboard Pembelajaran - ${classDisplay}`;
+        }
+
+        // Update schedule section
+        updateClassSchedule(userClass);
+
+        // Update student data for specific class
+        updateClassStudentData(userClass);
+
+        // Update announcements for specific class
+        updateClassAnnouncements(userClass);
+
+        // Update top students for specific class
+        updateTopStudents(userClass);
+      }
+
+      function extractClassFromRole(role) {
+        // Extract class from role like "Guru Kelas 5A" -> "5A"
+        const classMatch = role.match(/Kelas (\d+[A-Z])/);
+        return classMatch ? classMatch[1] : null;
+      }
+
+      function updateClassSchedule(userClass) {
+        const scheduleContainer = document.querySelector(
+          ".bg-white.rounded-xl.p-6.shadow-md .space-y-3"
+        );
+        if (!scheduleContainer) return;
+
+        const classText = userClass ? `Kelas ${userClass}` : "Kelas 5A";
+        const scheduleKey = userClass
+          ? `schedule_${userClass}`
+          : "schedule_default";
+
+        // Load saved schedules or use default
+        let schedules = JSON.parse(localStorage.getItem(scheduleKey) || "[]");
+
+        if (schedules.length === 0) {
+          schedules = [
+            { subject: "Matematika", time: "08:00 - 09:30", color: "blue" },
+            {
+              subject: "Bahasa Indonesia",
+              time: "10:00 - 11:30",
+              color: "green",
+            },
+            { subject: "IPA", time: "13:00 - 14:30", color: "orange" },
+          ];
+          localStorage.setItem(scheduleKey, JSON.stringify(schedules));
+        }
+
+        if (schedules.length === 0) {
+          scheduleContainer.innerHTML = `
+                    <div class="text-center text-gray-500 py-4">
+                        <p>Belum ada jadwal hari ini</p>
+                        <button onclick="openScheduleManager()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm underline">
+                            Tambah jadwal →
+                        </button>
+                    </div>
+                `;
+          return;
+        }
+
+        scheduleContainer.innerHTML = schedules
+          .map(
+            (schedule) => `
+                <div class="flex items-center justify-between p-3 bg-${schedule.color}-50 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-3 h-3 bg-${schedule.color}-500 rounded-full"></div>
+                        <div>
+                            <p class="font-medium">${schedule.subject}</p>
+                            <p class="text-sm text-gray-600">${classText}</p>
+                        </div>
+                    </div>
+                    <span class="text-sm font-medium text-${schedule.color}-600">${schedule.time}</span>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function updateClassStudentData(userClass) {
+        // Load class-specific student data
+        const classKey = userClass
+          ? `students_${userClass}`
+          : "students_default";
+        const classStudents = JSON.parse(
+          localStorage.getItem(classKey) || "[]"
+        );
+
+        // If no class-specific data exists, create sample data
+        if (classStudents.length === 0 && userClass) {
+          const sampleStudents = generateSampleStudents(userClass);
+          localStorage.setItem(classKey, JSON.stringify(sampleStudents));
+          studentsData.students = sampleStudents;
+        } else {
+          studentsData.students = classStudents;
+        }
+
+        // Update grades and attendance for this class
+        const gradesKey = userClass ? `grades_${userClass}` : "grades_default";
+        const attendanceKey = userClass
+          ? `attendance_${userClass}`
+          : "attendance_default";
+
+        studentsData.grades = JSON.parse(
+          localStorage.getItem(gradesKey) || "[]"
+        );
+        studentsData.attendance = JSON.parse(
+          localStorage.getItem(attendanceKey) || "[]"
+        );
+      }
+
+      function generateSampleStudents(userClass) {
+        // Return empty array - no default students
+        return [];
+      }
+
+      function updateClassAnnouncements(userClass) {
+        const announcementsContainer = document.querySelector(
+          ".bg-white.rounded-xl.p-6.shadow-md .space-y-3"
+        );
+        if (
+          !announcementsContainer ||
+          !announcementsContainer.parentElement
+            .querySelector("h2")
+            .textContent.includes("Pengumuman")
+        )
+          return;
+
+        // Load announcements from localStorage
+        const announcements = JSON.parse(
+          localStorage.getItem("schoolAnnouncements") || "[]"
+        );
+
+        // Filter announcements for current class or show general announcements
+        const relevantAnnouncements = announcements
+          .filter(
+            (announcement) =>
+              announcement.target === "Semua Kelas" ||
+              announcement.target === `Kelas ${userClass}` ||
+              announcement.target === currentUser.role ||
+              announcement.target === "Semua Guru"
+          )
+          .slice(0, 3); // Show only latest 3
+
+        // If no announcements, show empty state with add button
+        if (relevantAnnouncements.length === 0) {
+          announcementsContainer.innerHTML = `
+                    <div class="text-center text-gray-500 py-4">
+                        <p class="mb-2">Belum ada pengumuman</p>
+                        ${
+                          currentUser.role === "Kepala Sekolah" ||
+                          currentUser.role === "Administrator"
+                            ? '<button onclick="openAnnouncementManager()" class="text-blue-600 hover:text-blue-800 text-sm underline">Buat pengumuman →</button>'
+                            : '<p class="text-xs">Pengumuman akan muncul di sini</p>'
+                        }
+                    </div>
+                `;
+        } else {
+          announcementsContainer.innerHTML = relevantAnnouncements
+            .map(
+              (announcement) => `
+                    <div class="p-3 bg-${
+                      announcement.color
+                    }-50 border-l-4 border-${announcement.color}-400 rounded">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">${
+                                  announcement.title
+                                }</p>
+                                <p class="text-xs text-gray-600 mt-1">${
+                                  announcement.description
+                                }</p>
+                                <p class="text-xs text-gray-500 mt-1">Target: ${
+                                  announcement.target
+                                }</p>
+                            </div>
+                            ${
+                              announcement.priority === "urgent"
+                                ? '<span class="text-red-500 text-xs font-bold">URGENT</span>'
+                                : ""
+                            }
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Dibuat: ${
+                          announcement.date
+                        } oleh ${announcement.author}</p>
+                    </div>
+                `
+            )
+            .join("");
+        }
+      }
+
+      // Schedule Management Functions
+      function openScheduleManager() {
+        const userClass = extractClassFromRole(currentUser.role);
+        const scheduleKey = userClass
+          ? `schedule_${userClass}`
+          : "schedule_default";
+        const schedules = JSON.parse(localStorage.getItem(scheduleKey) || "[]");
+
+        const schedulesList = schedules
+          .map(
+            (schedule, index) => `
+                <div class="p-4 bg-gray-50 rounded-lg mb-3 border-l-4 border-${schedule.color}-400">
+                    <div class="flex justify-between items-center">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">${schedule.subject}</h4>
+                            <p class="text-sm text-gray-600 mt-1">${schedule.time}</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="w-3 h-3 bg-${schedule.color}-500 rounded-full"></span>
+                                <span class="text-xs text-gray-500 capitalize">${schedule.color}</span>
+                            </div>
+                        </div>
+                        <button onclick="deleteSchedule(${index})" class="ml-3 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
+                            Hapus
+                        </button>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-6">
+                    <!-- Form Tambah Jadwal -->
+                    <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                        <h4 class="font-medium text-teal-800 mb-4 flex items-center">
+                            📅 Tambah Jadwal Baru
+                            <span class="ml-2 bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded-full">Kelas ${
+                              userClass || "5A"
+                            }</span>
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Mata Pelajaran</label>
+                                <div class="space-y-2">
+                                    <select id="scheduleSubjectSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" onchange="handleSubjectSelection()">
+                                        <option value="">-- Pilih Mata Pelajaran --</option>
+                                        <option value="Matematika">Matematika</option>
+                                        <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                                        <option value="IPA">IPA (Ilmu Pengetahuan Alam)</option>
+                                        <option value="IPS">IPS (Ilmu Pengetahuan Sosial)</option>
+                                        <option value="PKN">PKN (Pendidikan Kewarganegaraan)</option>
+                                        <option value="Agama">Pendidikan Agama</option>
+                                        <option value="Seni Budaya">Seni Budaya</option>
+                                        <option value="Olahraga">Pendidikan Jasmani</option>
+                                        <option value="Bahasa Inggris">Bahasa Inggris</option>
+                                        <option value="Muatan Lokal">Muatan Lokal</option>
+                                        <option value="custom">➕ Mata Pelajaran Lainnya (Tulis Sendiri)</option>
+                                    </select>
+                                    
+                                    <input id="scheduleSubjectCustom" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 hidden" placeholder="Tulis nama mata pelajaran (contoh: Ekstrakurikuler Pramuka, Bimbingan Konseling, dll)">
+                                    
+                                    <input type="hidden" id="scheduleSubject" value="">
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">💡 Pilih dari daftar atau tulis mata pelajaran sendiri</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-700">Waktu Mulai</label>
+                                    <input id="scheduleStartTime" type="time" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" value="08:00">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-700">Waktu Selesai</label>
+                                    <input id="scheduleEndTime" type="time" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" value="09:30">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Warna Tema</label>
+                                <div class="grid grid-cols-5 gap-3">
+                                    <button type="button" onclick="selectScheduleColor('blue')" class="schedule-color-btn p-3 bg-blue-100 border-2 border-blue-300 rounded-lg hover:border-blue-500 transition-colors">
+                                        <div class="w-4 h-4 bg-blue-500 rounded-full mx-auto mb-1"></div>
+                                        <span class="text-xs text-blue-700">Biru</span>
+                                    </button>
+                                    <button type="button" onclick="selectScheduleColor('green')" class="schedule-color-btn p-3 bg-green-100 border-2 border-green-300 rounded-lg hover:border-green-500 transition-colors">
+                                        <div class="w-4 h-4 bg-green-500 rounded-full mx-auto mb-1"></div>
+                                        <span class="text-xs text-green-700">Hijau</span>
+                                    </button>
+                                    <button type="button" onclick="selectScheduleColor('orange')" class="schedule-color-btn p-3 bg-orange-100 border-2 border-orange-300 rounded-lg hover:border-orange-500 transition-colors">
+                                        <div class="w-4 h-4 bg-orange-500 rounded-full mx-auto mb-1"></div>
+                                        <span class="text-xs text-orange-700">Orange</span>
+                                    </button>
+                                    <button type="button" onclick="selectScheduleColor('purple')" class="schedule-color-btn p-3 bg-purple-100 border-2 border-purple-300 rounded-lg hover:border-purple-500 transition-colors">
+                                        <div class="w-4 h-4 bg-purple-500 rounded-full mx-auto mb-1"></div>
+                                        <span class="text-xs text-purple-700">Ungu</span>
+                                    </button>
+                                    <button type="button" onclick="selectScheduleColor('red')" class="schedule-color-btn p-3 bg-red-100 border-2 border-red-300 rounded-lg hover:border-red-500 transition-colors">
+                                        <div class="w-4 h-4 bg-red-500 rounded-full mx-auto mb-1"></div>
+                                        <span class="text-xs text-red-700">Merah</span>
+                                    </button>
+                                </div>
+                                <input type="hidden" id="selectedScheduleColor" value="blue">
+                            </div>
+                            
+                            <div class="flex justify-end">
+                                <button onclick="addSchedule()" class="px-6 py-3 bg-teal-500 text-white rounded-lg hover:bg-teal-600 font-medium">
+                                    📅 Tambah ke Jadwal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daftar Jadwal -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            📋 Jadwal Hari Ini - Kelas ${userClass || "5A"}
+                            <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${
+                              schedules.length
+                            } mata pelajaran</span>
+                        </h4>
+                        
+                        <div class="max-h-96 overflow-y-auto">
+                            ${
+                              schedulesList ||
+                              '<div class="text-center text-gray-500 py-8">Belum ada jadwal. Tambahkan mata pelajaran pertama!</div>'
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-2">💡 Tips Mengatur Jadwal:</h4>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Atur jadwal sesuai dengan kurikulum sekolah</li>
+                            <li>• Gunakan warna berbeda untuk setiap mata pelajaran</li>
+                            <li>• Pastikan tidak ada jadwal yang bertabrakan</li>
+                            <li>• Jadwal akan tersimpan otomatis untuk kelas Anda</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+        openModal("Kelola Jadwal Pembelajaran", content);
+      }
+
+      function selectScheduleColor(color) {
+        document.getElementById("selectedScheduleColor").value = color;
+
+        // Update visual selection
+        document.querySelectorAll(".schedule-color-btn").forEach((btn) => {
+          btn.classList.remove("ring-2", "ring-offset-2");
+        });
+
+        event.target
+          .closest(".schedule-color-btn")
+          .classList.add("ring-2", "ring-offset-2", `ring-${color}-400`);
+      }
+
+      function handleSubjectSelection() {
+        const selectElement = document.getElementById("scheduleSubjectSelect");
+        const customInput = document.getElementById("scheduleSubjectCustom");
+        const hiddenInput = document.getElementById("scheduleSubject");
+
+        if (selectElement.value === "custom") {
+          customInput.classList.remove("hidden");
+          customInput.focus();
+          hiddenInput.value = "";
+
+          // Listen for custom input changes
+          customInput.oninput = function () {
+            hiddenInput.value = this.value;
+          };
+        } else {
+          customInput.classList.add("hidden");
+          customInput.value = "";
+          hiddenInput.value = selectElement.value;
+        }
+      }
+
+      function addSchedule() {
+        const subject = document.getElementById("scheduleSubject").value;
+        const startTime = document.getElementById("scheduleStartTime").value;
+        const endTime = document.getElementById("scheduleEndTime").value;
+        const color = document.getElementById("selectedScheduleColor").value;
+
+        if (!subject || !startTime || !endTime) {
+          alert("Mohon lengkapi semua field jadwal!");
+          return;
+        }
+
+        if (startTime >= endTime) {
+          alert("Waktu selesai harus lebih besar dari waktu mulai!");
+          return;
+        }
+
+        const userClass = extractClassFromRole(currentUser.role);
+        const scheduleKey = userClass
+          ? `schedule_${userClass}`
+          : "schedule_default";
+        const schedules = JSON.parse(localStorage.getItem(scheduleKey) || "[]");
+
+        const newSchedule = {
+          id: Date.now(),
+          subject: subject,
+          time: `${startTime} - ${endTime}`,
+          color: color,
+          createdAt: new Date().toISOString(),
+        };
+
+        schedules.push(newSchedule);
+
+        // Sort schedules by start time
+        schedules.sort((a, b) => {
+          const timeA = a.time.split(" - ")[0];
+          const timeB = b.time.split(" - ")[0];
+          return timeA.localeCompare(timeB);
+        });
+
+        localStorage.setItem(scheduleKey, JSON.stringify(schedules));
+
+        // Clear form
+        document.getElementById("scheduleSubjectSelect").value = "";
+        document.getElementById("scheduleSubjectCustom").value = "";
+        document
+          .getElementById("scheduleSubjectCustom")
+          .classList.add("hidden");
+        document.getElementById("scheduleSubject").value = "";
+        document.getElementById("scheduleStartTime").value = "08:00";
+        document.getElementById("scheduleEndTime").value = "09:30";
+        document.getElementById("selectedScheduleColor").value = "blue";
+
+        alert(
+          `Jadwal "${subject}" berhasil ditambahkan!\n\nWaktu: ${startTime} - ${endTime}`
+        );
+
+        // Refresh schedule in dashboard
+        updateClassSchedule(userClass);
+
+        // Refresh modal content
+        setTimeout(() => {
+          openScheduleManager();
+        }, 100);
+      }
+
+      function deleteSchedule(index) {
+        const userClass = extractClassFromRole(currentUser.role);
+        const scheduleKey = userClass
+          ? `schedule_${userClass}`
+          : "schedule_default";
+        const schedules = JSON.parse(localStorage.getItem(scheduleKey) || "[]");
+
+        if (index < 0 || index >= schedules.length) {
+          alert("Jadwal tidak ditemukan!");
+          return;
+        }
+
+        const schedule = schedules[index];
+
+        if (
+          confirm(
+            `Apakah Anda yakin ingin menghapus jadwal "${schedule.subject}"?\n\nWaktu: ${schedule.time}`
+          )
+        ) {
+          schedules.splice(index, 1);
+          localStorage.setItem(scheduleKey, JSON.stringify(schedules));
+
+          alert(`Jadwal "${schedule.subject}" berhasil dihapus!`);
+
+          // Refresh schedule in dashboard
+          updateClassSchedule(userClass);
+
+          // Refresh modal content
+          setTimeout(() => {
+            openScheduleManager();
+          }, 100);
+        }
+      }
+
+      // Announcement Management Functions
+      function openAnnouncementManager() {
+        const announcements = JSON.parse(
+          localStorage.getItem("schoolAnnouncements") || "[]"
+        );
+
+        const announcementsList = announcements
+          .map(
+            (announcement, index) => `
+                <div class="p-4 bg-gray-50 rounded-lg mb-3 border-l-4 border-${
+                  announcement.color
+                }-400">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">${
+                              announcement.title
+                            }</h4>
+                            <p class="text-sm text-gray-600 mt-1">${
+                              announcement.description
+                            }</p>
+                            <div class="flex items-center space-x-4 mt-2 text-xs text-gray-500">
+                                <span>📅 ${announcement.date}</span>
+                                <span>🎯 ${announcement.target}</span>
+                                <span class="px-2 py-1 bg-${
+                                  announcement.priority === "urgent"
+                                    ? "red"
+                                    : announcement.priority === "important"
+                                    ? "yellow"
+                                    : "blue"
+                                }-100 text-${
+              announcement.priority === "urgent"
+                ? "red"
+                : announcement.priority === "important"
+                ? "yellow"
+                : "blue"
+            }-800 rounded-full">
+                                    ${
+                                      announcement.priority === "urgent"
+                                        ? "URGENT"
+                                        : announcement.priority === "important"
+                                        ? "PENTING"
+                                        : "NORMAL"
+                                    }
+                                </span>
+                            </div>
+                        </div>
+                        <button onclick="deleteAnnouncement(${index})" class="ml-3 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
+                            Hapus
+                        </button>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-6">
+                    <!-- Form Tambah Pengumuman -->
+                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                        <h4 class="font-medium text-yellow-800 mb-4 flex items-center">
+                            📢 Buat Pengumuman Baru
+                            <span class="ml-2 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Khusus Kepala Sekolah</span>
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Judul Pengumuman</label>
+                                <input id="announcementTitle" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="Contoh: Rapat Guru Bulanan">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Deskripsi/Detail</label>
+                                <textarea id="announcementDescription" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" rows="3" placeholder="Jelaskan detail pengumuman..."></textarea>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-700">Target</label>
+                                    <select id="announcementTarget" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                                        <option value="Semua Kelas">Semua Kelas</option>
+                                        <option value="Semua Guru">Semua Guru</option>
+                                        <option value="Kelas 1A">Kelas 1A</option>
+                                        <option value="Kelas 1B">Kelas 1B</option>
+                                        <option value="Kelas 2A">Kelas 2A</option>
+                                        <option value="Kelas 2B">Kelas 2B</option>
+                                        <option value="Kelas 3A">Kelas 3A</option>
+                                        <option value="Kelas 3B">Kelas 3B</option>
+                                        <option value="Kelas 4A">Kelas 4A</option>
+                                        <option value="Kelas 4B">Kelas 4B</option>
+                                        <option value="Kelas 5A">Kelas 5A</option>
+                                        <option value="Kelas 5B">Kelas 5B</option>
+                                        <option value="Kelas 6A">Kelas 6A</option>
+                                        <option value="Kelas 6B">Kelas 6B</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-700">Prioritas</label>
+                                    <select id="announcementPriority" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                                        <option value="normal">Normal</option>
+                                        <option value="important">Penting</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-700">Warna</label>
+                                    <select id="announcementColor" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                                        <option value="blue">Biru (Info)</option>
+                                        <option value="green">Hijau (Positif)</option>
+                                        <option value="yellow">Kuning (Peringatan)</option>
+                                        <option value="red">Merah (Urgent)</option>
+                                        <option value="purple">Ungu (Event)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end">
+                                <button onclick="addAnnouncement()" class="px-6 py-3 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 font-medium">
+                                    📢 Publikasikan Pengumuman
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daftar Pengumuman -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            📋 Pengumuman Aktif
+                            <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${
+                              announcements.length
+                            } pengumuman</span>
+                        </h4>
+                        
+                        <div class="max-h-96 overflow-y-auto">
+                            ${
+                              announcementsList ||
+                              '<div class="text-center text-gray-500 py-8">Belum ada pengumuman. Buat pengumuman pertama!</div>'
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-2">💡 Tips Pengumuman Efektif:</h4>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Gunakan judul yang jelas dan menarik perhatian</li>
+                            <li>• Pilih target yang tepat agar pengumuman sampai ke orang yang tepat</li>
+                            <li>• Gunakan prioritas "Urgent" hanya untuk hal yang benar-benar mendesak</li>
+                            <li>• Berikan detail yang cukup agar tidak menimbulkan kebingungan</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+        openModal("Kelola Pengumuman Sekolah", content);
+      }
+
+      function addAnnouncement() {
+        const title = document.getElementById("announcementTitle").value.trim();
+        const description = document
+          .getElementById("announcementDescription")
+          .value.trim();
+        const target = document.getElementById("announcementTarget").value;
+        const priority = document.getElementById("announcementPriority").value;
+        const color = document.getElementById("announcementColor").value;
+
+        if (!title || !description) {
+          alert("Mohon lengkapi judul dan deskripsi pengumuman!");
+          return;
+        }
+
+        const announcements = JSON.parse(
+          localStorage.getItem("schoolAnnouncements") || "[]"
+        );
+
+        const newAnnouncement = {
+          id: Date.now(),
+          title: title,
+          description: description,
+          target: target,
+          priority: priority,
+          color: color,
+          author: currentUser.name,
+          authorRole: currentUser.role,
+          date: new Date().toLocaleDateString("id-ID"),
+          time: new Date().toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          createdAt: new Date().toISOString(),
+        };
+
+        announcements.unshift(newAnnouncement); // Add to beginning
+        localStorage.setItem(
+          "schoolAnnouncements",
+          JSON.stringify(announcements)
+        );
+
+        // Clear form
+        document.getElementById("announcementTitle").value = "";
+        document.getElementById("announcementDescription").value = "";
+        document.getElementById("announcementTarget").value = "Semua Kelas";
+        document.getElementById("announcementPriority").value = "normal";
+        document.getElementById("announcementColor").value = "blue";
+
+        alert(
+          `Pengumuman "${title}" berhasil dipublikasikan!\n\nTarget: ${target}\nPrioritas: ${priority.toUpperCase()}`
+        );
+
+        // Refresh announcements in dashboard
+        updateClassAnnouncements(extractClassFromRole(currentUser.role));
+
+        // Refresh modal content
+        setTimeout(() => {
+          openAnnouncementManager();
+        }, 100);
+      }
+
+      function deleteAnnouncement(index) {
+        const announcements = JSON.parse(
+          localStorage.getItem("schoolAnnouncements") || "[]"
+        );
+        const announcement = announcements[index];
+
+        if (
+          confirm(
+            `Apakah Anda yakin ingin menghapus pengumuman "${announcement.title}"?\n\nPengumuman yang dihapus tidak dapat dikembalikan.`
+          )
+        ) {
+          announcements.splice(index, 1);
+          localStorage.setItem(
+            "schoolAnnouncements",
+            JSON.stringify(announcements)
+          );
+
+          alert(`Pengumuman "${announcement.title}" berhasil dihapus!`);
+
+          // Refresh announcements in dashboard
+          updateClassAnnouncements(extractClassFromRole(currentUser.role));
+
+          // Refresh modal content
+          setTimeout(() => {
+            openAnnouncementManager();
+          }, 100);
+        }
+      }
+
+      function updateTopStudents(userClass) {
+        const topStudentsContainer = document.querySelector(
+          ".bg-white.rounded-xl.p-6.shadow-md .space-y-3"
+        );
+        if (
+          !topStudentsContainer ||
+          !topStudentsContainer.parentElement
+            .querySelector("h2")
+            .textContent.includes("Siswa Terbaik")
+        )
+          return;
+
+        // Load approved best students from localStorage
+        const approvedBestStudents = JSON.parse(
+          localStorage.getItem("approvedBestStudents") || "[]"
+        );
+
+        if (approvedBestStudents.length === 0) {
+          topStudentsContainer.innerHTML = `
+                    <div class="text-center text-gray-500 py-6">
+                        <div class="text-4xl mb-2">🏆</div>
+                        <p class="text-sm mb-2">Belum ada siswa terbaik yang disetujui</p>
+                        <p class="text-xs text-gray-400">Guru dapat mengusulkan siswa terbaik melalui menu "Siswa Terbaik"</p>
+                    </div>
+                `;
+          return;
+        }
+
+        const medals = ["🥇", "🥈", "🥉"];
+        const backgrounds = ["yellow", "gray", "orange"];
+
+        topStudentsContainer.innerHTML = approvedBestStudents
+          .slice(0, 3)
+          .map(
+            (student, index) => `
+                <div class="flex items-center space-x-3 p-3 bg-${backgrounds[index]}-50 rounded-lg">
+                    <div class="text-2xl">${medals[index]}</div>
+                    <div class="flex-1">
+                        <p class="font-medium">${student.studentName}</p>
+                        <p class="text-sm text-gray-600">${student.achievement}</p>
+                        <p class="text-xs text-gray-500">Diusulkan: ${student.teacherName} (${student.teacherClass})</p>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      // Update dashboard statistics
+      function updateDashboardStats() {
+        document.getElementById("totalStudents").textContent =
+          studentsData.students.length;
+      }
+
+      // Best Student Management Functions
+      function openBestStudentManager() {
+        const userClass = extractClassFromRole(currentUser.role);
+        const classKey = userClass
+          ? `bestStudents_${userClass}`
+          : "bestStudents_default";
+        const myBestStudents = JSON.parse(
+          localStorage.getItem(classKey) || "[]"
+        );
+
+        const bestStudentsList = myBestStudents
+          .map(
+            (student, index) => `
+                <div class="p-4 bg-green-50 rounded-lg mb-3 border-l-4 border-green-400">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800 flex items-center">
+                                🏆 ${student.studentName}
+                                <span class="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">${student.category}</span>
+                            </h4>
+                            <p class="text-sm text-gray-600 mt-1">${student.achievement}</p>
+                            <p class="text-xs text-gray-500 mt-2"><strong>Alasan:</strong> ${student.reason}</p>
+                            <div class="flex items-center space-x-4 mt-2 text-xs text-gray-500">
+                                <span>📅 Dipilih: ${student.date}</span>
+                                <span>👨‍🏫 ${student.teacherName}</span>
+                            </div>
+                        </div>
+                        <button onclick="removeBestStudent(${index})" class="ml-3 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
+                            Hapus
+                        </button>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+
+        const content = `
+                <div class="space-y-6">
+                    <!-- Form Pilih Siswa Terbaik -->
+                    <div class="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                        <h4 class="font-medium text-pink-800 mb-4 flex items-center">
+                            🏆 Pilih Siswa Terbaik Kelas
+                            <span class="ml-2 bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">Kelas ${
+                              userClass || "5A"
+                            }</span>
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Nama Siswa</label>
+                                <select id="bestStudentName" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500">
+                                    <option value="">-- Pilih Siswa --</option>
+                                    ${studentsData.students
+                                      .map(
+                                        (student) =>
+                                          `<option value="${student}">${student}</option>`
+                                      )
+                                      .join("")}
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Kategori Prestasi</label>
+                                <select id="bestStudentCategory" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500">
+                                    <option value="">-- Pilih Kategori --</option>
+                                    <option value="Akademik">Prestasi Akademik</option>
+                                    <option value="Olahraga">Prestasi Olahraga</option>
+                                    <option value="Seni">Prestasi Seni</option>
+                                    <option value="Kepemimpinan">Kepemimpinan</option>
+                                    <option value="Karakter">Karakter Terpuji</option>
+                                    <option value="Kreativitas">Kreativitas</option>
+                                    <option value="Kedisiplinan">Kedisiplinan</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Deskripsi Prestasi/Pencapaian</label>
+                                <textarea id="bestStudentAchievement" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" rows="3" placeholder="Jelaskan prestasi atau pencapaian siswa secara detail..."></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-700">Alasan Memilih</label>
+                                <textarea id="bestStudentReason" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" rows="2" placeholder="Mengapa siswa ini layak menjadi siswa terbaik kelas?"></textarea>
+                            </div>
+                            
+                            <div class="flex justify-end">
+                                <button onclick="addBestStudent()" class="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 font-medium">
+                                    🏆 Tetapkan Siswa Terbaik
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daftar Siswa Terbaik Kelas -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            👑 Siswa Terbaik Kelas ${userClass || "5A"}
+                            <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${
+                              myBestStudents.length
+                            } siswa</span>
+                        </h4>
+                        
+                        <div class="max-h-96 overflow-y-auto">
+                            ${
+                              bestStudentsList ||
+                              '<div class="text-center text-gray-500 py-8">Belum ada siswa terbaik. Pilih siswa terbaik pertama!</div>'
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-2">💡 Tips Memilih Siswa Terbaik:</h4>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Pilih siswa yang benar-benar berprestasi dan layak mendapat pengakuan</li>
+                            <li>• Berikan deskripsi prestasi yang jelas dan spesifik</li>
+                            <li>• Siswa terbaik akan langsung muncul di dashboard semua guru</li>
+                            <li>• Anda dapat memilih beberapa siswa dengan kategori prestasi berbeda</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+        openModal("Kelola Siswa Terbaik Kelas", content);
+      }
+
+      function addBestStudent() {
+        const studentName = document.getElementById("bestStudentName").value;
+        const category = document.getElementById("bestStudentCategory").value;
+        const achievement = document
+          .getElementById("bestStudentAchievement")
+          .value.trim();
+        const reason = document
+          .getElementById("bestStudentReason")
+          .value.trim();
+
+        if (!studentName || !category || !achievement || !reason) {
+          alert("Mohon lengkapi semua field siswa terbaik!");
+          return;
+        }
+
+        const userClass = extractClassFromRole(currentUser.role);
+        const classKey = userClass
+          ? `bestStudents_${userClass}`
+          : "bestStudents_default";
+        const myBestStudents = JSON.parse(
+          localStorage.getItem(classKey) || "[]"
+        );
+
+        // Check if student already exists in best students list
+        const existingStudent = myBestStudents.find(
+          (student) => student.studentName === studentName
+        );
+
+        if (existingStudent) {
+          alert("Siswa ini sudah ada dalam daftar siswa terbaik kelas!");
+          return;
+        }
+
+        const newBestStudent = {
+          id: Date.now(),
+          studentName: studentName,
+          category: category,
+          achievement: achievement,
+          reason: reason,
+          teacherName: currentUser.name,
+          teacherUsername: currentUser.username,
+          teacherClass: userClass || "Guru",
+          date: new Date().toLocaleDateString("id-ID"),
+          time: new Date().toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          createdAt: new Date().toISOString(),
+        };
+
+        myBestStudents.unshift(newBestStudent); // Add to beginning
+        localStorage.setItem(classKey, JSON.stringify(myBestStudents));
+
+        // Also add to global approved best students for dashboard display
+        const globalBestStudents = JSON.parse(
+          localStorage.getItem("approvedBestStudents") || "[]"
+        );
+
+        // Remove if already exists globally (to avoid duplicates)
+        const existingGlobalIndex = globalBestStudents.findIndex(
+          (s) => s.studentName === studentName
+        );
+        if (existingGlobalIndex !== -1) {
+          globalBestStudents.splice(existingGlobalIndex, 1);
+        }
+
+        // Add to global list
+        globalBestStudents.unshift({
+          studentName: studentName,
+          category: category,
+          achievement: achievement,
+          teacherName: currentUser.name,
+          teacherClass: userClass || "Guru",
+          approvedDate: new Date().toLocaleDateString("id-ID"),
+          approvedBy: currentUser.name,
+        });
+
+        localStorage.setItem(
+          "approvedBestStudents",
+          JSON.stringify(globalBestStudents)
+        );
+
+        // Clear form
+        document.getElementById("bestStudentName").value = "";
+        document.getElementById("bestStudentCategory").value = "";
+        document.getElementById("bestStudentAchievement").value = "";
+        document.getElementById("bestStudentReason").value = "";
+
+        alert(
+          `Siswa terbaik berhasil ditetapkan!\n\nSiswa: ${studentName}\nKategori: ${category}\n\nSiswa akan muncul di dashboard sebagai siswa terbaik.`
+        );
+
+        // Update dashboard
+        updateTopStudents(userClass);
+
+        // Refresh modal content
+        setTimeout(() => {
+          openBestStudentManager();
+        }, 100);
+      }
+
+      function removeBestStudent(index) {
+        const userClass = extractClassFromRole(currentUser.role);
+        const classKey = userClass
+          ? `bestStudents_${userClass}`
+          : "bestStudents_default";
+        const myBestStudents = JSON.parse(
+          localStorage.getItem(classKey) || "[]"
+        );
+        const student = myBestStudents[index];
+
+        if (
+          confirm(
+            `Apakah Anda yakin ingin menghapus "${student.studentName}" dari daftar siswa terbaik?\n\nSiswa akan dihapus dari dashboard juga.`
+          )
+        ) {
+          // Remove from class-specific list
+          myBestStudents.splice(index, 1);
+          localStorage.setItem(classKey, JSON.stringify(myBestStudents));
+
+          // Remove from global list
+          const globalBestStudents = JSON.parse(
+            localStorage.getItem("approvedBestStudents") || "[]"
+          );
+          const globalIndex = globalBestStudents.findIndex(
+            (s) => s.studentName === student.studentName
+          );
+          if (globalIndex !== -1) {
+            globalBestStudents.splice(globalIndex, 1);
+            localStorage.setItem(
+              "approvedBestStudents",
+              JSON.stringify(globalBestStudents)
+            );
+          }
+
+          alert(
+            `"${student.studentName}" berhasil dihapus dari daftar siswa terbaik!`
+          );
+
+          // Update dashboard
+          updateTopStudents(userClass);
+
+          // Refresh modal content
+          setTimeout(() => {
+            openBestStudentManager();
+          }, 100);
+        }
+      }
+
+      // Make all functions globally accessible for onclick handlers
+      window.addStudent = addStudent;
+      window.addSchedule = addSchedule;
+      window.selectScheduleColor = selectScheduleColor;
+      window.handleSubjectSelection = handleSubjectSelection;
+      window.addAnnouncement = addAnnouncement;
+      window.addBestStudent = addBestStudent;
+      window.openStudentManager = openStudentManager;
+      window.openScheduleManager = openScheduleManager;
+      window.openAnnouncementManager = openAnnouncementManager;
+      window.openBestStudentManager = openBestStudentManager;
+      window.removeStudent = removeStudent;
+      window.removeBestStudent = removeBestStudent;
+      window.deleteSchedule = deleteSchedule;
+      window.deleteAnnouncement = deleteAnnouncement;
+
+      // Close modal when clicking outside
+      document
+        .getElementById("toolModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeModal();
+          }
+        });
+
+      // Initialize on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        if (currentUser) {
+          showDashboard();
+        } else {
+          showLogin();
+        }
+        updateDashboardStats();
+      });
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'971d705267e94573',t:'MTc1NTY0NjIyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

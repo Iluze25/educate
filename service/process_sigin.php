@@ -1,35 +1,47 @@
-<?php 
+<?php
 session_start();
 require 'connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-}
+    $password = $_POST['password'];
 
-// Ambil data user berdasarkan username
-$stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
-$stmt->bind_param("s", $username);
-$stmt->execute();
+    // Ambil data user dari database
+    $stmt = $conn->prepare("SELECT id, name, username, password, premission 
+                            FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-// Ambil hasil query
-$result = $stmt->get_result();
+    // Cek apakah user ada
+    if ($result->num_rows == 1) {
+        $user = $result->fetch_assoc();
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
+        // Verifikasi password
+        if (password_verify($password, $user['password'])) {
+            // Simpan ke session
+            $_SESSION['id']         = $user['id'];
+            $_SESSION['name']       = $user['name'];
+            $_SESSION['username']   = $user['username'];
+            $_SESSION['premission'] = $user['premission'];
 
-    // Cek password tanpa hashing
-    if ($password === $row['password']) {
-        $_SESSION['login'] = true;
-        header("Location: ./Example.php");
-        exit;
+            // Arahkan ke dashboard
+            header("Location: ../index.php");
+            exit;
+        } else {
+            echo "<script>
+                    alert('Password salah!');
+                    window.location.href = './login.php';
+                  </script>";
+        }
     } else {
-        echo "<p style='color:red;'>Password salah!</p>";
+        echo "<script>
+                alert('Username tidak ditemukan!');
+                window.location.href = './login.php';
+              </script>";
     }
-} else {
-    echo "<p style='color:red;'>Username tidak ditemukan!</p>";
-}
 
-$stmt->close();
+    $stmt->close();
+}
 $conn->close();
 ?>

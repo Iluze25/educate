@@ -44,7 +44,7 @@
           <p class="text-gray-600">Buat akun guru untuk mengakses portal</p>
         </div>
 
-        <form id="signupForm" class="space-y-6">
+        <form id="signupForm" class="space-y-6" action="service/process_signup.php" method="POST">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2"
               >Nama Lengkap</label
@@ -54,6 +54,7 @@
               type="text"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Contoh: Bu Sari Wijayanti"
+              name="name"
               required
             />
           </div>
@@ -67,6 +68,7 @@
               type="text"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Contoh: sari_guru"
+              name="username"
               required
             />
             <p class="text-xs text-gray-500 mt-1">
@@ -83,6 +85,7 @@
               type="password"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Minimal 6 karakter"
+              name="password"
               required
             />
           </div>
@@ -107,10 +110,11 @@
             <select
               id="signupRole"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              name="premission"
               required
             >
               <option value="">-- Pilih Kategori --</option>
-              <option value="Guru Kelas 1A">Guru</option>
+              <option value="Guru">Guru</option>
               <option value="Administrator">Administrator</option>
             </select>
           </div>
