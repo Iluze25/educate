@@ -11,28 +11,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // === VALIDASI ===
     // cek panjang name
-    if (strlen($name) < 8) {
+    if (strlen($name) < 4) {
         echo "<script>alert('Nama minimal 8 karakter!'); window.location.href='../signup.php';</script>";
         exit;
     }
 
-    // cek panjang username
-    if (strlen($username) < 8) {
-        echo "<script>alert('Username minimal 8 karakter!'); window.location.href='../signup.php';</script>";
-        exit;
-    }
 
-    // cek panjang password
-    if (strlen($password) < 8) {
-        echo "<script>alert('Password minimal 8 karakter!'); window.location.href='../signup.php';</script>";
-        exit;
-    }
 
-    // cek password == confirm
-    if ($password !== $confirm) {
-        echo "<script>alert('Konfirmasi password tidak sama!'); window.location.href='../signup.php';</script>";
-        exit;
-    }
+    
+
+    
 
     // cek apakah username sudah ada
     $check = $conn->prepare("SELECT id FROM users WHERE username = ?");
@@ -42,6 +30,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         echo "<script>alert('Username sudah terdaftar, silakan pilih yang lain!'); window.location.href='../signup.php';</script>";
+        exit;
+    }
+// cek panjang password
+    if (strlen($password) < 8) {
+        echo "<script>alert('Password minimal 8 karakter!'); window.location.href='../signup.php';</script>";
+        exit;
+    }
+    // cek password == confirm
+    if ($password !== $confirm) {
+        echo "<script>alert('Konfirmasi password tidak sama!'); window.location.href='../signup.php';</script>";
         exit;
     }
     $check->close();
