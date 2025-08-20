@@ -98,7 +98,7 @@
               id="signupPasswordConfirm"
               type="password"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              placeholder="Ulangi password"
+              placeholder="Ulangi password" name="confirm_password"
               required
             />
           </div>
